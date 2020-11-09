@@ -1,34 +1,50 @@
 import firebase from "firebase";
+import {
+  SIGN_IN,
+  SIGNIN_SUCCESS,
+  SIGNOUT_SUCCESS,
+  SIGN_UP,
+  signOutSucces,
+  signUpSucces,
+  signUpError,
+  signInError,
+  signInSuccess,
+} from "./../actions/authActions";
+
+import { setLoading } from "./../actions/loadingActions";
 
 export const authMiddleware = (store) => (next) => (action) => {
-  if (action.type === "SIGN_IN") {
-    store.dispatch({ type: "SET_LOADING", payload: true });
+  if (action.type === SIGN_IN) {
+    store.dispatch(setLoading(true));
     firebase
       .auth()
       .signInWithEmailAndPassword(action.data.emailIN, action.data.passwordIN)
-      .then(() => {
-        store.dispatch({ type: "SIGNIN_SUCCESS", payload: { isAuth: true } });
-        store.dispatch({ type: "SET_LOADING", payload: false });
+      .then((res) => {
+        console.log("res", res);
+        store.dispatch(
+          signInSuccess({
+            isAuth: true,
+            userId: res.user.uid,
+            email: res.user.email,
+          })
+        );
+        store.dispatch(setLoading(false));
       })
       .catch((err) => {
-        store.dispatch({
-          type: "SIGNIN_ERROR",
-          payload: { isAuth: false },
-          err,
-        });
-        store.dispatch({ type: "SET_LOADING", payload: false });
+        store.dispatch(signInError({ isAuth: false, err }));
+        store.dispatch(setLoading(false));
       });
   }
-  if (action.type === "SIGNIN_OUT/SUCCESS") {
+  if (action.type === SIGNOUT_SUCCESS) {
     firebase
       .auth()
       .signOut()
       .then(() => {
-        store.dispatch({ type: "SIGN_OUT/SUCCESS" });
+        store.dispatch(signOutSucces());
       });
   }
-  if (action.type === "SIGN_UP") {
-    store.dispatch({ type: "SET_LOADING", payload: true });
+  if (action.type === SIGN_UP) {
+    store.dispatch(setLoading(true));
     firebase
       .auth()
       .createUserWithEmailAndPassword(action.email, action.password)
@@ -39,18 +55,17 @@ export const authMiddleware = (store) => (next) => (action) => {
           .doc(res.user.uid)
           .set({ login: action.login, email: action.email })
           .then(() => {
-            console.log("POPAL")
-            store.dispatch({ type: "SIGNUP_SUCCESS", swap: true });
-            store.dispatch({ type: "SET_LOADING", payload: false });
+            store.dispatch(signUpSucces());
+            store.dispatch(setLoading(false));
           })
           .catch((err) => {
-            store.dispatch({ type: "SIGNUP_ERROR", err });
-            store.dispatch({ type: "SET_LOADING", payload: false });
+            store.dispatch(signUpError({ err }));
+            store.dispatch(setLoading(false));
           });
       })
       .catch((err) => {
-        store.dispatch({ type: "SIGNUP_ERROR", err })
-        store.dispatch({ type: "SET_LOADING", payload: false });
+        store.dispatch(signUpError({ err }));
+        store.dispatch(setLoading(false));
       });
   }
   return next(action);

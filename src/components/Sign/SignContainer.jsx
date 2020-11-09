@@ -3,6 +3,7 @@ import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import s from "./SignContainer.module.css";
 import { connect } from "react-redux";
+import { SIGN_UP, SIGN_IN } from "./../../redux/actions/authActions";
 
 class SignContainer extends Component {
   state = {
@@ -20,15 +21,24 @@ class SignContainer extends Component {
       cssClass: "",
     });
   };
+
   render() {
     return (
       <div className={s.body}>
         <div className={`${s.container} ${this.state.cssClass}`} id="container">
           <div className={`${s.formContainer} ${s.signUpContainer}`}>
-            <SignUp />
+            <SignUp
+              isLoading={this.props.isLoading}
+              error={this.props.error}
+              signUp={this.props.signUp}
+            />
           </div>
           <div className={`${s.formContainer} ${s.signInContainer}`}>
-            <SignIn />
+            <SignIn
+              isLoading={this.props.isLoading}
+              error={this.props.error}
+              signIn={this.props.signIn}
+            />
           </div>
           <div className={s.overlayContainer}>
             <div className={s.overlay}>
@@ -64,8 +74,19 @@ class SignContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  swap: state.AuthReducer.swap,
+const mapStateToProps = (state) => {
+  console.log("state", state);
+
+  return {
+    isLoading: state.LoadingReducer.isLoading,
+    error: state.AuthReducer.error,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signUp: (login, email, password) =>
+    dispatch({ type: SIGN_UP, login, email, password }),
+  signIn: (data) => dispatch({ type: SIGN_IN, data }),
 });
 
-export default connect(mapStateToProps, null)(SignContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SignContainer);

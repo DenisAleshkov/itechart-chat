@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 class SignIn extends Component {
   handleSumbit = (e) => {
     e.preventDefault();
-    this.props.auth(this.state);
+    this.props.signIn(this.state);
   };
 
   handleChange = (e) => {
@@ -35,20 +34,10 @@ class SignIn extends Component {
           onChange={this.handleChange}
         />
         <button disabled={isLoading}>
-          {isLoading ? `Loading...` : `LOGIN`}
+          {isLoading ? `Loading...` : `SIGN IN`}
         </button>
       </form>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  error: state.AuthReducer.error,
-  isLoading: state.LoadingReducer.isLoading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  auth: (data) => dispatch({ type: "SIGN_IN", data }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default SignIn;

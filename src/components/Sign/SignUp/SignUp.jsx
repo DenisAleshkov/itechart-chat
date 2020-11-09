@@ -1,13 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 class SignUp extends Component {
-  state = {
-    email: "",
-    login: "",
-    password: "",
-  };
-
   handleSumbit = (e) => {
     e.preventDefault();
     this.props.signUp(
@@ -56,14 +49,6 @@ class SignUp extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  signUp: (login, email, password) =>
-    dispatch({ type: "SIGN_UP", login, email, password }),
-});
 
-const mapStateToProps = (state) => ({
-  isLoading: state.LoadingReducer.isLoading,
-  error: state.AuthReducer.error,
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp;
