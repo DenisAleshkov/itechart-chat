@@ -1,21 +1,16 @@
 import React from "react";
-import SignContainer from "./components/Sign/SignContainer";
-import Chat from "./components/Chat/Chat";
-import { Switch, Route, Redirect } from "react-router-dom";
-import "./App.css";
+import SignContainer from "./views/SignContainer/SignContainer";
+import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
+import "./App.css";
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {this.props.isAuth && <Redirect to="/chat" />}
         <Switch>
           <Route exact path="/">
             <SignContainer />
-          </Route>
-          <Route exact path="/chat">
-            <Chat />
           </Route>
         </Switch>
       </div>
@@ -23,6 +18,6 @@ class App extends React.Component {
   }
 }
 
-const MapStateToProps = (state) => ({ isAuth: state.AuthReducer.isAuth });
-
+const MapStateToProps = (state) => ({ isAuth: state.AuthReducer.isAuth,})
+  
 export default connect(MapStateToProps, null)(App);

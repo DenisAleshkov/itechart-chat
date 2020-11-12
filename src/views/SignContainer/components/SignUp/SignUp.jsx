@@ -3,11 +3,7 @@ import React, { Component } from "react";
 class SignUp extends Component {
   handleSumbit = (e) => {
     e.preventDefault();
-    this.props.signUp(
-      this.state.login,
-      this.state.emailUP,
-      this.state.passwordUP
-    );
+    this.props.signUp(this.state);
   };
 
   handleChange = (e) => {
@@ -17,8 +13,7 @@ class SignUp extends Component {
   };
 
   render() {
-    const { isLoading, error } = this.props;
-    console.log("error", error);
+    const { isLoading } = this.props;
     return (
       <form onSubmit={this.handleSumbit}>
         <h1>Create Account</h1>
@@ -48,7 +43,5 @@ class SignUp extends Component {
     );
   }
 }
-
-
 
 export default SignUp;

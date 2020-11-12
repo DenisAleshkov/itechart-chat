@@ -1,4 +1,4 @@
-import { SET_LOADING } from "./../actions/loadingActions";
+import { SET_LOADING } from "./../constants";
 
 const initialState = {
   isLoading: false,
@@ -12,7 +12,6 @@ const LoadingReducer = (state = initialState, action) => {
         isLoading: action.payload,
       };
     }
-
     default: {
       return state;
     }

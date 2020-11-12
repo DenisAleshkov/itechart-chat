@@ -1,7 +1,6 @@
 import firebase from "firebase";
 import {
   SIGN_IN,
-  SIGNIN_SUCCESS,
   SIGNOUT_SUCCESS,
   SIGN_UP,
   signOutSucces,
@@ -20,7 +19,7 @@ export const authMiddleware = (store) => (next) => (action) => {
       .auth()
       .signInWithEmailAndPassword(action.data.emailIN, action.data.passwordIN)
       .then((res) => {
-        console.log("res", res);
+        console.log('res', res.data)
         store.dispatch(
           signInSuccess({
             isAuth: true,
@@ -47,13 +46,13 @@ export const authMiddleware = (store) => (next) => (action) => {
     store.dispatch(setLoading(true));
     firebase
       .auth()
-      .createUserWithEmailAndPassword(action.email, action.password)
+      .createUserWithEmailAndPassword(action.data.emailUP, action.data.passwordUP)
       .then((res) => {
         firebase
           .firestore()
           .collection("users")
           .doc(res.user.uid)
-          .set({ login: action.login, email: action.email })
+          .set({ login: action.data.login, email: action.data.emailUP})
           .then(() => {
             store.dispatch(signUpSucces());
             store.dispatch(setLoading(false));

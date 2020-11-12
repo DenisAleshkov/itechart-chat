@@ -13,8 +13,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const { isLoading, error } = this.props;
-    console.log("error", error);
+    const { isLoading } = this.props;
     return (
       <form onSubmit={this.handleSumbit}>
         <h1>Sign in</h1>

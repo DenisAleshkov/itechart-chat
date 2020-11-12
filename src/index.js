@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase";
-import store from "./redux/store";
+import store from "./store/store";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -17,8 +17,6 @@ firebase.initializeApp({
   messagingSenderId: "750761678069",
   appId: "1:750761678069:web:f288f3f3f678f04fb361bc",
 });
-
-
 
 ReactDOM.render(
   <React.StrictMode>
