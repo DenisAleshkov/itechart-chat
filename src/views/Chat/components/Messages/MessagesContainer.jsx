@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import MyMessages from "./../MyMessages/MyMessages";
+import YourMessages from "./../YourMessages/YourMessages";
+import Loading from "./../../../utils/Loading/Loading";
 import firebase from "firebase";
 import s from "./../../Chat.module.css";
 
@@ -8,14 +11,16 @@ class Messages extends Component {
     this.state = {
       message: "",
     };
-    this.messageRef = React.createRef();
   }
+
   componentDidMount() {
     firebase
       .firestore()
       .collection("messages")
       .doc("from")
       .collection(this.props.dialogId)
+      .doc(this.props.myId)
+      .collection("message")
       .onSnapshot((snapshot) => {
         const sortSnapshot = snapshot.docs.sort(
           (a, b) => a.data().date.seconds - b.data().date.seconds
@@ -46,43 +51,28 @@ class Messages extends Component {
   };
 
   showMessage = () => {
-    const messagesArray = [
+    const messages = [
       ...this.props.toMessages,
       ...this.props.fromMessages,
-    ];
-
-    const messages = messagesArray.sort((a, b) => a.date - b.date);
-    console.log("messages", messages);
+    ].sort((a, b) => a.date - b.date);
     return messages.map((element) => {
       if (element.type === "from") {
         return (
-          <li className={s.you} key={element.id} ref={this.messageRef}>
-            <div className={s.entete}>
-              <span className={`${s.status} ${s.green}`}></span>
-              <h2>{this.props.user.login}</h2>
-              <h3>10:12AM, Today</h3>
-            </div>
-            <div className={s.message}>{element.text}</div>
-          </li>
+          <YourMessages
+            key={element.id}
+            login={this.props.user.login}
+            text={element.text}
+          />
         );
       } else {
-        return (
-          <li className={s.me} key={element.id} ref={this.messageRef}>
-            <div className={s.entete}>
-              <h3>10:12AM, Today</h3>
-              <h2>{this.props.login}</h2>
-              <span className={`${s.status} ${s.blue}`}></span>
-            </div>
-            <div className={s.message}>{element.text}</div>
-          </li>
-        );
+        return <MyMessages key={element.id} text={element.text} />;
       }
     });
   };
 
   render() {
     if (!this.props.user) {
-      return false;
+      return <Loading />;
     }
     const { photoUrl, login } = this.props.user;
 
@@ -94,9 +84,7 @@ class Messages extends Component {
             <h2>Chat with {login}</h2>
           </div>
         </header>
-        <ul className={s.chat} ref={this.messageRef}>
-          {this.showMessage()}
-        </ul>
+        <ul className={s.chat}>{this.showMessage()}</ul>
         <footer>
           <textarea
             id="message"

@@ -4,16 +4,23 @@ import User from "./components/User/User";
 import Profile from "./components/Profile/Profile";
 import Messages from "./components/Messages/MessagesContainer";
 import SignContainer from "../SignContainer/SignContainer";
+import StartTemplate from "./components/StartTemplate/StartTemplate";
 import Loading from "../utils/Loading/Loading";
 import {
   getUserById,
   getUsers,
+  setDialogId,
   uploadPhoto,
 } from "./../../store/actions/chatActions";
 import { signIn, signOut, loadUser } from "./../../store/actions/authActions";
 import { connect } from "react-redux";
 import s from "./Chat.module.css";
-import { sendMessage } from "../../store/actions/messageAction";
+import {
+  getMessages,
+  sendMessage,
+  updateFromMessage,
+} from "../../store/actions/messageAction";
+import { setLoading } from "../../store/actions/loadingActions";
 
 class Chat extends Component {
   constructor(props) {
@@ -64,43 +71,10 @@ class Chat extends Component {
   };
 
   changeUser = async (e) => {
-    const db = firebase.firestore();
     this.props.getUserById(e.target.id);
     this.props.setDialogId(e.target.id);
-    const to = [];
-    const from = [];
-
-    db.collection("messages")
-      .doc("to")
-      .collection(e.target.id)
-      .get()
-      .then((result) => {
-        result.forEach((element) => {
-          to.push({
-            ...element.data(),
-            date: element.data().date.seconds,
-            id: element.id,
-            type: "to",
-          });
-        });
-      });
-    this.props.setToMessage(to);
-
-    db.collection("messages")
-      .doc("from")
-      .collection(e.target.id)
-      .get()
-      .then((result) => {
-        result.forEach((element) => {
-          from.push({
-            ...element.data(),
-            date: element.data().date.seconds,
-            type: "from",
-            id: element.id,
-          });
-        });
-      });
-    this.props.setFromMessage(from);
+    this.props.getMessages(this.props.id, e.target.id, "to");
+    this.props.getMessages(this.props.id, e.target.id, "from");
   };
 
   render() {
@@ -113,9 +87,11 @@ class Chat extends Component {
           <Profile
             photo={this.props.photoUrl}
             fileChanged={this.fileChanged}
-            isLoading={this.props.isLoading}
+            isLoadingAvatar={this.props.isLoadingAvatar}
             signOut={this.signOut}
+            login={this.props.login}
           />
+          <h3 className={s.usersLength}>Users:{this.props.users.length}</h3>
           <ul className={s.usersList}>{this.getUsersList()}</ul>
         </aside>
         <main className={s.main}>
@@ -129,11 +105,11 @@ class Chat extends Component {
               changeUser={this.changeUser}
               sendMessage={this.props.sendMessage}
               dialogId={this.props.dialogId}
-              updateFromMessage = {this.props.updateFromMessage}
+              updateFromMessage={this.props.updateFromMessage}
               isLoading={this.props.isLoading}
             />
           ) : (
-            0
+            <StartTemplate />
           )}
         </main>
       </div>
@@ -147,6 +123,7 @@ const mapStateToProps = (state) => ({
   login: state.AuthReducer.login,
   photoUrl: state.AuthReducer.photoUrl,
   isLoading: state.LoadingReducer.isLoading,
+  isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
   changedUser: state.ChatReducer.changedUser,
   toMessages: state.MessageReducer.toMessages,
   fromMessages: state.MessageReducer.fromMessages,
@@ -160,12 +137,12 @@ const mapDispatchToProps = (dispatch) => ({
   signOut: () => dispatch(signOut()),
   loadUser: (data) => dispatch(loadUser(data)),
   getUserById: (data) => dispatch(getUserById(data)),
-  setToMessage: (message) => dispatch({ type: "SET_TO_MESSAGE", message }),
-  setFromMessage: (message) => dispatch({ type: "SET_FROM_MESSAGE", message }),
+  getMessages: (myId, userId, type) =>
+    dispatch(getMessages(myId, userId, type)),
   sendMessage: (myId, userId, message) =>
     dispatch(sendMessage(myId, userId, message)),
-  updateFromMessage: (payload)=>dispatch({type: "UPDATE_FROM_MESSAGE", payload}),
-  setDialogId: (payload) => dispatch({ type: "SET_DIALOG_ID", payload }),
+  updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
+  setDialogId: (payload) => dispatch(setDialogId(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

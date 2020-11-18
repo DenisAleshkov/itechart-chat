@@ -22,13 +22,13 @@ const MessageReducer = (state = initialState, action) => {
     case SET_TO_MESSAGE: {
       return {
         ...state,
-        toMessages: action.message,
+        toMessages: action.payload,
       };
     }
     case SET_FROM_MESSAGE: {
       return {
         ...state,
-        fromMessages: action.message,
+        fromMessages: action.payload,
       };
     }
     default: {

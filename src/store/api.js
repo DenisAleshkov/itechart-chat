@@ -11,4 +11,5 @@ export const SIGN = {
 
 export const MESSAGE = {
   SEND_MESSAGE: () => "/sendMessage",
+  GET_MESSAGE: () => "/getMessages"
 };

@@ -1,9 +1,9 @@
-import { SET_USERS, GET_USER_BY_ID } from "./../constants";
+import { SET_USERS, GET_USER_BY_ID, SET_DIALOG_ID } from "./../constants";
 
 const initialState = {
   users: [],
   changedUser: null,
-  dialogId: null
+  dialogId: null,
 };
 
 const ChatReducer = (state = initialState, action) => {
@@ -17,14 +17,14 @@ const ChatReducer = (state = initialState, action) => {
     case GET_USER_BY_ID: {
       return {
         ...state,
-        changedUser: action.payload
-      }
+        changedUser: action.payload,
+      };
     }
-    case "SET_DIALOG_ID": {
+    case SET_DIALOG_ID: {
       return {
         ...state,
-        dialogId: action.payload
-      }
+        dialogId: action.payload,
+      };
     }
     default: {
       return state;
