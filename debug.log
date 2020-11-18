@@ -1,1 +1,7 @@
 [1106/111054.882:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1113/001740.345:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1116/233719.669:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Р”РµРЅРёСЃ\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\5fd20535-4e32-4033-9f41-70d5b0856187: Системе не удается найти указанный путь. (0x3)
+[1117/155019.986:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)
+[1117/180037.214:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Р”РµРЅРёСЃ\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\accf387d-4071-4816-b894-d4f043c8c950: Системе не удается найти указанный путь. (0x3)
+[1117/180147.424:ERROR:process_info.cc(359)] UncheckedAllocate
+[1117/184201.776:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)

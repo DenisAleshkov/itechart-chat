@@ -4,7 +4,6 @@ import SignUp from "./components/SignUp/SignUp";
 import s from "./SignContainer.module.css";
 import { connect } from "react-redux";
 import { signIn, signUp } from "../../store/actions/authActions";
-
 class SignContainer extends Component {
   state = {
     cssClass: "",
@@ -21,7 +20,6 @@ class SignContainer extends Component {
       cssClass: "",
     });
   };
-
   render() {
     return (
       <div className={s.body}>

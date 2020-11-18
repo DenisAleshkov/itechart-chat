@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class SignIn extends Component {
   handleSumbit = (e) => {
     e.preventDefault();
-    this.props.signIn(this.state);
+    this.props.signIn(this.state)
   };
 
   handleChange = (e) => {

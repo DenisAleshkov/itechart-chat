@@ -13,6 +13,7 @@ class SignUp extends Component {
   };
 
   render() {
+    console.log(this.state);
     const { isLoading } = this.props;
     return (
       <form onSubmit={this.handleSumbit}>
