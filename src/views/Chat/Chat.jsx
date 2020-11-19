@@ -20,7 +20,6 @@ import {
   sendMessage,
   updateFromMessage,
 } from "../../store/actions/messageAction";
-import { setLoading } from "../../store/actions/loadingActions";
 
 class Chat extends Component {
   constructor(props) {
@@ -106,7 +105,7 @@ class Chat extends Component {
               sendMessage={this.props.sendMessage}
               dialogId={this.props.dialogId}
               updateFromMessage={this.props.updateFromMessage}
-              isLoading={this.props.isLoading}
+              isLoadingDialog={this.props.isLoadingDialog}
             />
           ) : (
             <StartTemplate />
@@ -124,6 +123,7 @@ const mapStateToProps = (state) => ({
   photoUrl: state.AuthReducer.photoUrl,
   isLoading: state.LoadingReducer.isLoading,
   isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
+  isLoadingDialog: state.LoadingReducer.isLoadingDialog,
   changedUser: state.ChatReducer.changedUser,
   toMessages: state.MessageReducer.toMessages,
   fromMessages: state.MessageReducer.fromMessages,
@@ -142,7 +142,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendMessage: (myId, userId, message) =>
     dispatch(sendMessage(myId, userId, message)),
   updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
-  setDialogId: (payload) => dispatch(setDialogId(payload))
+  setDialogId: (payload) => dispatch(setDialogId(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

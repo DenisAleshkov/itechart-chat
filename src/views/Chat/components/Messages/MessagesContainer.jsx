@@ -22,6 +22,7 @@ class Messages extends Component {
       .doc(this.props.myId)
       .collection("message")
       .onSnapshot((snapshot) => {
+        console.log("snapshot", snapshot);
         const sortSnapshot = snapshot.docs.sort(
           (a, b) => a.data().date.seconds - b.data().date.seconds
         );
@@ -43,11 +44,15 @@ class Messages extends Component {
     });
   };
   sendMessage = (e) => {
-    const message = {
-      text: this.state.message,
-      date: firebase.firestore.Timestamp.fromDate(new Date()),
-    };
-    this.props.sendMessage(this.props.myId, this.props.user.id, message);
+    console.log(e.target);
+    if (e.key === "Enter" || e.type === "click") {
+      const message = {
+        text: this.state.message,
+        date: firebase.firestore.Timestamp.fromDate(new Date()),
+      };
+      this.props.sendMessage(this.props.myId, this.props.user.id, message);
+      this.setState({ message: "" });
+    }
   };
 
   showMessage = () => {
@@ -71,9 +76,10 @@ class Messages extends Component {
   };
 
   render() {
-    if (!this.props.user) {
+    if (!this.props.user || this.props.isLoadingDialog) {
       return <Loading />;
     }
+
     const { photoUrl, login } = this.props.user;
 
     return (
@@ -89,7 +95,9 @@ class Messages extends Component {
           <textarea
             id="message"
             placeholder="Type your message"
+            onKeyPress={this.sendMessage}
             onChange={this.handleChange}
+            value={this.state.message}
           ></textarea>
           <button onClick={this.sendMessage}>Send</button>
         </footer>

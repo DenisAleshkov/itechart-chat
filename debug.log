@@ -11,3 +11,5 @@
 [1119/003720.070:ERROR:crash_report_exception_handler.cc(113)] WriteEverything failed
 [1119/003720.070:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\Р”РµРЅРёСЃ\AppData\Local\Google\Chrome\User Data\Crashpad\reports\40d8ac16-6f0b-4c99-8df0-6df520b1cd61.dmp: Процесс не может получить доступ к файлу, так как этот файл занят другим процессом. (0x20)
 [1119/003722.059:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Р”РµРЅРёСЃ\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\c923a6e3-656d-49ed-8f40-646f8a2b664b: Системе не удается найти указанный путь. (0x3)
+[1120/010346.985:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Р”РµРЅРёСЃ\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\7a2e21e5-2ac3-4c1b-8488-29bb6b979d52: Системе не удается найти указанный путь. (0x3)
+[1120/010347.064:ERROR:directory_reader_win.cc(43)] FindFirstFile: Системе не удается найти указанный путь. (0x3)

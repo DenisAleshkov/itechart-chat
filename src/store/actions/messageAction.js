@@ -6,7 +6,7 @@ import {
   UPDATE_FROM_MESSAGE,
 } from "./../constants";
 import { MESSAGE } from "./../api";
-import { setLoading } from "./loadingActions";
+import { setLoading, setDialogLoading } from "./loadingActions";
 
 export const updateToMessage = (payload) => ({
   type: UPDATE_TO_MESSAGE,
@@ -51,6 +51,7 @@ export const sendMessage = (myId, userId, message) => {
 
 export const getMessages = (myId, userId, type) => {
   return (dispatch) => {
+    dispatch(setDialogLoading(true));
     axios
       .post(MESSAGE.GET_MESSAGE(), {
         myId: myId,
@@ -60,10 +61,15 @@ export const getMessages = (myId, userId, type) => {
       .then((res) => {
         if (type === "from") {
           dispatch(setFromMessage(res.data.messages));
+          dispatch(setDialogLoading(false));
         } else if (type === "to") {
           dispatch(setToMessage(res.data.messages));
+          dispatch(setDialogLoading(false));
         }
       })
-      .catch((error) => console.log("ERROR", error.response));
+      .catch((error) => {
+        console.log("ERROR", error.response);
+        dispatch(setDialogLoading(false));
+      });
   };
 };

@@ -1,5 +1,6 @@
 export const SET_LOADING = "SET_LOADING";
 export const SET_LOADING_AVATAR = "SET_LOADING_AVATAR";
+export const SET_DIALOG_LOADING = "SET_DIALOG_LOADING";
 
 export const SIGN_IN = "SIGN_IN";
 export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
