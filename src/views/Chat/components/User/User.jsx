@@ -1,25 +1,55 @@
 import React from "react";
-import s from "./../../Chat.module.css"
+import firebase from "firebase";
+import s from "./../../Chat.module.css";
 
-const User = ({ login, photo, id, changeUser }) => {
-  return (
-    <li className={s.user} id={id} onClick={changeUser}>
-      <img
-        className={s.userImage}
-        src={photo}
-        alt="avatar"
-        onClick={changeUser}
-        id={id}
-      />
-      <div className={s.userBody}>
-        <h2 className={s.userTitle}>{login}</h2>
-        <h3 className={s.userStatus}>
-          <span className={`${s.status} ${s.orange}`}></span>
-          offline
-        </h3>
-      </div>
-    </li>
-  );
-};
+class User extends React.Component {
+  componentDidMount() {
+    firebase
+      .firestore()
+      .collection("users")
+      .onSnapshot((snapshot) => {
+        const users = [];
+        const status = [];
+        snapshot.docs.forEach((doc) => {
+          if (doc.id !== localStorage.getItem("token")) {
+            status.push({
+              id: doc.id,
+              status: doc.data().status,
+              login: doc.data().email,
+            });
+            users.push({
+              ...doc.data(),
+              id: doc.id,
+            });
+          }
+        });
+        this.props.setUsers(users);
+        this.props.updateUsersStatus(status);
+      });
+  }
+  render() {
+    const { login, photo, id, changeUser, status } = this.props;
+    return (
+      <li className={s.user} id={id} onClick={changeUser}>
+        <img
+          className={s.userImage}
+          src={photo}
+          alt="avatar"
+          onClick={changeUser}
+          id={id}
+        />
+        <div className={s.userBody}>
+          <h2 className={s.userTitle}>{login}</h2>
+          <h3 className={s.userStatus}>
+            <span
+              className={`${s.status} ${status ? s.green : s.orange}`}
+            ></span>
+            {status ? "online" : "offline"}
+          </h3>
+        </div>
+      </li>
+    );
+  }
+}
 
 export default User;

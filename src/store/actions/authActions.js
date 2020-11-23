@@ -21,16 +21,18 @@ export const signOutSuccess = () => ({ type: SIGN_OUT });
 export const loadUser = (payload) => ({ type: LOAD_USER, payload });
 
 export const signIn = (credentials) => {
+  const db = firebase.firestore().collection("users");
   return (dispatch) => {
     dispatch(setLoading(true));
     firebase
       .auth()
       .signInWithEmailAndPassword(credentials.emailIN, credentials.passwordIN)
       .then(async (res) => {
-        const userData = await firebase
-          .firestore()
-          .collection("users")
-          .get(res.user.uid);
+        const userData = await db.get(res.user.uid);
+        db.doc(res.user.uid)
+          .update({ status: true })
+          .then(() => console.log("UPDATE STATUS"))
+          .catch((error) => console.log("ERROR UPDATING USER", error.response));
         const user = userData.docs.map((doc) => doc.data())[0];
         dispatch(
           signInSuccess({
@@ -38,19 +40,22 @@ export const signIn = (credentials) => {
             userId: res.user.uid,
             email: user.email,
             login: user.login,
+            status: true,
           })
         );
         localStorage.setItem("token", res.user.uid);
         dispatch(setLoading(false));
       })
       .catch((error) => {
-        dispatch(signInError({ isAuth: false, error }));
+        dispatch(signInError({ isAuth: false, status: false, error }));
         dispatch(setLoading(false));
       });
   };
 };
 
 export const signUp = (credentials) => {
+  const db = firebase.firestore().collection("users");
+  const storage = firebase.storage().ref("images");
   return (dispatch) => {
     dispatch(setLoading(true));
     firebase
@@ -60,19 +65,15 @@ export const signUp = (credentials) => {
         credentials.passwordUP
       )
       .then((res) => {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(res.user.uid)
+        db.doc(res.user.uid)
           .set({
             login: credentials.login,
             email: credentials.emailUP,
+            status: false,
             photoUrl: DEFAULT_PHOTO,
           })
           .then(() => {
-            firebase
-              .storage()
-              .ref("images")
+            storage
               .child(res.user.uid)
               .put(DEFAULT_PHOTO)
               .then(() => {
@@ -93,20 +94,26 @@ export const signUp = (credentials) => {
   };
 };
 
-export const signOut = () => {
+export const signOut = (history) => {
+  const db = firebase.firestore().collection("users");
   return (dispatch) => {
     dispatch(setLoading(true));
     firebase
       .auth()
       .signOut()
       .then(() => {
+        db.doc(localStorage.getItem("token"))
+          .update({ status: false })
+          .then(() => console.log("UPDATE STATUS"))
+          .catch((error) => console.log("ERROR UPDATING USER", error.response));
         dispatch(signOutSuccess());
         localStorage.removeItem("token");
+        console.log("SIGN OUT")
         dispatch(setLoading(false));
       })
       .catch((err) => {
-        dispatch(setLoading(false));
         console.log("SIGN ERROR", err.response);
+        dispatch(setLoading(false));
       });
   };
 };

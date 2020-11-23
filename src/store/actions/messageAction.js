@@ -6,7 +6,7 @@ import {
   UPDATE_FROM_MESSAGE,
 } from "./../constants";
 import { MESSAGE } from "./../api";
-import { setLoading, setDialogLoading } from "./loadingActions";
+import { setDialogLoading, setLoadingMessage } from "./loadingActions";
 
 export const updateToMessage = (payload) => ({
   type: UPDATE_TO_MESSAGE,
@@ -24,7 +24,7 @@ export const setFromMessage = (payload) => ({
 
 export const sendMessage = (myId, userId, message) => {
   return (dispatch) => {
-    dispatch(setLoading(true));
+    dispatch(setLoadingMessage(true));
     axios
       .post(MESSAGE.SEND_MESSAGE(), {
         myId: myId,
@@ -37,14 +37,15 @@ export const sendMessage = (myId, userId, message) => {
             type: "to",
             text: message.text,
             date: message.date.seconds,
+            sendDate: message.sendDate,
             id: res.data.id,
           })
         );
-        dispatch(setLoading(false));
+        dispatch(setLoadingMessage(false));
       })
       .catch((err) => {
         console.log("ERROR", err.response);
-        dispatch(setLoading(false));
+        dispatch(setLoadingMessage(false));
       });
   };
 };

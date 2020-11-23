@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-    width: 750px;
+    width: 1000px;
     height: 800px;
     background: #eff3f7;
     margin: 0 auto;
@@ -42,7 +42,7 @@ body {
 }
 
 .main {
-    width: 490px;
+    width: 650px;
     height: 800px;
     display: inline-block;
     font-size: 15px;
@@ -54,11 +54,11 @@ body {
     margin: 0;
     list-style-type: none;
     overflow-y: auto;
-    height: 690px;
+    height: 358px;
 }
 
 .aside li {
-    padding: 10px 0;
+    padding: 15px 35px;
     cursor: pointer;
 }
 
@@ -71,11 +71,15 @@ h3 {
     margin: 0;
 }
 
-.user {}
-
 .usersLength {
     color: #fff;
+    margin: 10px 0 20px 0;
 }
+
+.aside li {
+    display: flex;
+    justify-content: flex-start;
+} 
 
 .aside li .userImage {
     border-radius: 50%;
@@ -148,8 +152,6 @@ h3 {
     margin-top: 8px;
 }
 
-
-
 .main header h2 {
     font-size: 16px;
     margin-bottom: 5px;
@@ -159,6 +161,7 @@ h3 {
     font-size: 14px;
     font-weight: normal;
     color: #7e818a;
+    text-align: left;
 }
 
 .chat {

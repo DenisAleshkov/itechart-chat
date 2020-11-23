@@ -3,24 +3,27 @@ import firebase from "firebase";
 import User from "./components/User/User";
 import Profile from "./components/Profile/Profile";
 import Messages from "./components/Messages/MessagesContainer";
-import SignContainer from "../SignContainer/SignContainer";
 import StartTemplate from "./components/StartTemplate/StartTemplate";
 import Loading from "../utils/Loading/Loading";
 import {
   getUserById,
   getUsers,
   setDialogId,
+  setUserStatus,
+  updateUsersStatus,
   uploadPhoto,
+  setUsers,
 } from "./../../store/actions/chatActions";
 import { signIn, signOut, loadUser } from "./../../store/actions/authActions";
 import { connect } from "react-redux";
-import s from "./Chat.module.css";
 import {
   getMessages,
   sendMessage,
   updateFromMessage,
 } from "../../store/actions/messageAction";
-
+import { withRouter } from "react-router-dom";
+import s from "./Chat.module.css";
+import { setLoading } from "../../store/actions/loadingActions";
 class Chat extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +54,7 @@ class Chat extends Component {
   };
 
   getUsersList = () => {
-    return this.props.users.map((user) => {
+    return this.props.users.map((user, index) => {
       return (
         <User
           changeUser={this.changeUser}
@@ -59,6 +62,9 @@ class Chat extends Component {
           id={user.id}
           login={user.login}
           photo={user.photoUrl}
+          status={this.props.usersStatus[index].status}
+          updateUsersStatus={this.props.updateUsersStatus}
+          setUsers={this.props.setUsers}
         />
       );
     });
@@ -66,7 +72,7 @@ class Chat extends Component {
 
   signOut = () => {
     this.props.signOut();
-    return <SignContainer />;
+    this.props.history.push("/")
   };
 
   changeUser = async (e) => {
@@ -77,7 +83,7 @@ class Chat extends Component {
   };
 
   render() {
-    if (!this.props.id) {
+    if (this.props.isLoading) {
       return <Loading />;
     }
     return (
@@ -105,7 +111,7 @@ class Chat extends Component {
               sendMessage={this.props.sendMessage}
               dialogId={this.props.dialogId}
               updateFromMessage={this.props.updateFromMessage}
-              isLoadingDialog={this.props.isLoadingDialog}
+              isLoadingMessage={this.props.isLoadingMessage}
             />
           ) : (
             <StartTemplate />
@@ -116,33 +122,41 @@ class Chat extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  id: state.AuthReducer.userId,
-  users: state.ChatReducer.users,
-  login: state.AuthReducer.login,
-  photoUrl: state.AuthReducer.photoUrl,
-  isLoading: state.LoadingReducer.isLoading,
-  isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
-  isLoadingDialog: state.LoadingReducer.isLoadingDialog,
-  changedUser: state.ChatReducer.changedUser,
-  toMessages: state.MessageReducer.toMessages,
-  fromMessages: state.MessageReducer.fromMessages,
-  dialogId: state.ChatReducer.dialogId,
-});
+const mapStateToProps = (state) => {
+  return {
+    id: state.AuthReducer.userId,
+    login: state.AuthReducer.login,
+    photoUrl: state.AuthReducer.photoUrl,
+    isLoading: state.LoadingReducer.isLoading,
+    isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
+    isLoadingDialog: state.LoadingReducer.isLoadingDialog,
+    isLoadingMessage: state.LoadingReducer.isLoadingMessage,
+    toMessages: state.MessageReducer.toMessages,
+    fromMessages: state.MessageReducer.fromMessages,
+    dialogId: state.ChatReducer.dialogId,
+    usersStatus: state.ChatReducer.usersStatus,
+    users: state.ChatReducer.users,
+    changedUser: state.ChatReducer.changedUser,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (credentials) => dispatch(signIn(credentials)),
+  signOut: (history) => dispatch(signOut(history)),
   getUsers: (uid) => dispatch(getUsers(uid)),
-  uploadPhoto: (data) => dispatch(uploadPhoto(data)),
-  signOut: () => dispatch(signOut()),
-  loadUser: (data) => dispatch(loadUser(data)),
   getUserById: (data) => dispatch(getUserById(data)),
   getMessages: (myId, userId, type) =>
     dispatch(getMessages(myId, userId, type)),
+  setDialogId: (payload) => dispatch(setDialogId(payload)),
+  setUserStatus: (payload) => dispatch(setUserStatus(payload)),
+  setLoading: (payload) => dispatch(setLoading(payload)),
+  setUsers: (payload) => dispatch(setUsers(payload)),
+  updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
+  updateUsersStatus: (payload) => dispatch(updateUsersStatus(payload)),
+  uploadPhoto: (data) => dispatch(uploadPhoto(data)),
+  loadUser: (data) => dispatch(loadUser(data)),
   sendMessage: (myId, userId, message) =>
     dispatch(sendMessage(myId, userId, message)),
-  updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
-  setDialogId: (payload) => dispatch(setDialogId(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat));

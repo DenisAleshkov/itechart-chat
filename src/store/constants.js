@@ -1,6 +1,7 @@
 export const SET_LOADING = "SET_LOADING";
 export const SET_LOADING_AVATAR = "SET_LOADING_AVATAR";
 export const SET_DIALOG_LOADING = "SET_DIALOG_LOADING";
+export const SET_LOADING_MESSAGE = "SET_LOADING_MESSAGE";
 
 export const SIGN_IN = "SIGN_IN";
 export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
@@ -25,3 +26,9 @@ export const SET_TO_MESSAGE = "SET_TO_MESSAGE";
 export const SET_FROM_MESSAGE = "SET_FROM_MESSAGE";
 export const UPDATE_TO_MESSAGE = "UPDATE_TO_MESSAGE";
 export const UPDATE_FROM_MESSAGE = "UPDATE_FROM_MESSAGE";
+
+export const SET_STATUS = "SET_STATUS";
+export const UPDATE_USERS_STATUS = "UPDATE_USERS_STATUS";
+
+export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+export const WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

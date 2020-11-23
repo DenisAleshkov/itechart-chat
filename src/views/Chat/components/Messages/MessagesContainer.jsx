@@ -38,17 +38,19 @@ class Messages extends Component {
         this.props.updateFromMessage(from);
       });
   }
+
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
     });
   };
+
   sendMessage = (e) => {
-    console.log(e.target);
     if (e.key === "Enter" || e.type === "click") {
       const message = {
         text: this.state.message,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
+        sendDate: new Date(),
       };
       this.props.sendMessage(this.props.myId, this.props.user.id, message);
       this.setState({ message: "" });
@@ -67,19 +69,26 @@ class Messages extends Component {
             key={element.id}
             login={this.props.user.login}
             text={element.text}
+            date={element.sendDate}
           />
         );
       } else {
-        return <MyMessages key={element.id} text={element.text} />;
+        return (
+          <MyMessages
+            key={element.id}
+            text={element.text}
+            date={element.sendDate}
+          />
+        );
       }
     });
   };
 
+
   render() {
-    if (!this.props.user || this.props.isLoadingDialog) {
+    if (!this.props.user) {
       return <Loading />;
     }
-
     const { photoUrl, login } = this.props.user;
 
     return (
@@ -99,7 +108,12 @@ class Messages extends Component {
             onChange={this.handleChange}
             value={this.state.message}
           ></textarea>
-          <button onClick={this.sendMessage}>Send</button>
+          <button
+            disabled={this.props.isLoadingMessage}
+            onClick={this.sendMessage}
+          >
+            {this.props.isLoadingMessage ? "Loading" : "Send"}
+          </button>
         </footer>
       </div>
     );

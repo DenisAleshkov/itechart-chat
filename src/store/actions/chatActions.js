@@ -6,12 +6,19 @@ import {
   SET_PHOTO,
   GET_USER_BY_ID,
   SET_DIALOG_ID,
+  SET_STATUS,
+  UPDATE_USERS_STATUS,
 } from "./../constants";
-import { setLoading, setLoadingAvatar } from "./loadingActions";
+import { setLoading, setLoadingAvatar, setDialogLoading } from "./loadingActions";
 
 export const setUsers = (payload) => ({ type: SET_USERS, payload });
 export const setPhoto = (payload) => ({ type: SET_PHOTO, payload });
 export const setDialogId = (payload) => ({ type: SET_DIALOG_ID, payload });
+export const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
+export const updateUsersStatus = (payload) => ({
+  type: UPDATE_USERS_STATUS,
+  payload,
+});
 export const getUserByIdAction = (payload) => ({
   type: GET_USER_BY_ID,
   payload,
@@ -19,16 +26,16 @@ export const getUserByIdAction = (payload) => ({
 
 export const getUserById = (id) => {
   return (dispatch) => {
-    dispatch(setLoading(true));
+    dispatch(setDialogLoading(true));
     axios
       .post(USERS.GET_USER_BY_ID(), { id: id })
       .then((res) => {
         dispatch(getUserByIdAction(res.data[0]));
-        dispatch(setLoading(false));
+        dispatch(setDialogLoading(false));
       })
       .catch((error) => {
         console.log("ERROR:", error.response);
-        dispatch(setLoading(false));
+        dispatch(setDialogLoading(false));
       });
   };
 };

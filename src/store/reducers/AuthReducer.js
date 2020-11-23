@@ -15,6 +15,7 @@ const initialState = {
   email: "",
   error: null,
   photoUrl: "",
+  status: false,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -25,6 +26,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuth: action.payload.isAuth,
+        status: action.payload.status,
         error: action.payload.error.message,
       };
     }
@@ -38,6 +40,7 @@ const AuthReducer = (state = initialState, action) => {
         email: action.payload.email,
         login: action.payload.login,
         photoUrl: action.payload.photoUrl,
+        status: action.payload.status,
       };
     }
     case SIGNUP_SUCCESS: {
@@ -65,6 +68,7 @@ const AuthReducer = (state = initialState, action) => {
         email: "",
         error: null,
         photoUrl: "",
+        status: false,
       };
     }
     case LOAD_USER: {
