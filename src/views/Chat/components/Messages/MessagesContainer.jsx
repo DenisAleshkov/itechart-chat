@@ -84,9 +84,8 @@ class Messages extends Component {
     });
   };
 
-
   render() {
-    if (!this.props.user) {
+    if (!this.props.user || this.props.isLoadingDialog) {
       return <Loading />;
     }
     const { photoUrl, login } = this.props.user;

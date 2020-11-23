@@ -112,6 +112,7 @@ class Chat extends Component {
               dialogId={this.props.dialogId}
               updateFromMessage={this.props.updateFromMessage}
               isLoadingMessage={this.props.isLoadingMessage}
+              isLoadingDialog={this.props.isLoadingDialog}
             />
           ) : (
             <StartTemplate />

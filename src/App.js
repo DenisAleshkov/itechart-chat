@@ -9,8 +9,6 @@ class App extends React.Component {
   renderComponent = () => {
     const token = localStorage.getItem("token");
     if (token || this.props.isAuth) {
-      console.log('token', token)
-      console.log('this.props.isAuth', this.props)
       return <Redirect to="/chat" />;
     } else {
       return <Redirect to="/" />;
