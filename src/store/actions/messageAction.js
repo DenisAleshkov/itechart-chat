@@ -41,6 +41,7 @@ export const sendMessage = (myId, userId, message) => {
             id: res.data.id,
           })
         );
+        console.log("AAAAAAAAAAAAAAAAAAAAA")
         dispatch(setLoadingMessage(false));
       })
       .catch((err) => {

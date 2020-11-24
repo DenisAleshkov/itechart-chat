@@ -108,11 +108,11 @@ export const signOut = (history) => {
           .catch((error) => console.log("ERROR UPDATING USER", error.response));
         dispatch(signOutSuccess());
         localStorage.removeItem("token");
-        console.log("SIGN OUT")
+        history.push("/")
         dispatch(setLoading(false));
       })
       .catch((err) => {
-        console.log("SIGN ERROR", err.response);
+        console.log("SIGN ERROR", err);
         dispatch(setLoading(false));
       });
   };

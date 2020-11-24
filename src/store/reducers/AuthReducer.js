@@ -74,6 +74,7 @@ const AuthReducer = (state = initialState, action) => {
     case LOAD_USER: {
       return {
         ...state,
+        isAuth: action.payload.isAuth,
         userId: action.payload.id,
         email: action.payload.email,
         login: action.payload.login,

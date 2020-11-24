@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import User from "./components/User/User";
 import Profile from "./components/Profile/Profile";
-import Messages from "./components/Messages/MessagesContainer";
+import Messages from "./components/Messages/Messages";
 import StartTemplate from "./components/StartTemplate/StartTemplate";
 import Loading from "../utils/Loading/Loading";
 import {
@@ -25,13 +25,6 @@ import { withRouter } from "react-router-dom";
 import s from "./Chat.module.css";
 import { setLoading } from "../../store/actions/loadingActions";
 class Chat extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      toMessage: [],
-      fromMessage: [],
-    };
-  }
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -41,7 +34,7 @@ class Chat extends Component {
           .doc(user.uid)
           .get()
           .then((doc) => {
-            this.props.loadUser({ ...doc.data(), id: doc.id });
+            this.props.loadUser({ ...doc.data(), isAuth: true, id: doc.id });
             this.props.getUsers(this.props.id);
           });
       }
@@ -49,8 +42,9 @@ class Chat extends Component {
   }
 
   fileChanged = (e) => {
-    const file = e.target.files[0];
-    this.props.uploadPhoto({ file, id: this.props.id });
+    if (e.target.files.length) {
+      this.props.uploadPhoto({ file: e.target.files[0], id: this.props.id });
+    }
   };
 
   getUsersList = () => {
@@ -71,19 +65,27 @@ class Chat extends Component {
   };
 
   signOut = () => {
-    this.props.signOut();
-    this.props.history.push("/")
+    this.props.signOut(this.props.history);
+  };
+
+  isRender = (flag) => {
+    this.setState({
+      isRender: flag,
+    });
   };
 
   changeUser = async (e) => {
+    this.isRender(false);
     this.props.getUserById(e.target.id);
     this.props.setDialogId(e.target.id);
     this.props.getMessages(this.props.id, e.target.id, "to");
     this.props.getMessages(this.props.id, e.target.id, "from");
+    this.isRender(true);
   };
+  
 
   render() {
-    if (this.props.isLoading) {
+    if (this.props.isLoading || !this.props.isAuth) {
       return <Loading />;
     }
     return (
@@ -113,6 +115,8 @@ class Chat extends Component {
               updateFromMessage={this.props.updateFromMessage}
               isLoadingMessage={this.props.isLoadingMessage}
               isLoadingDialog={this.props.isLoadingDialog}
+              listenerMessage={this.listenerMessage}
+              unsubscribe={this.unsubscribe}
             />
           ) : (
             <StartTemplate />
@@ -125,6 +129,7 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    isAuth: state.AuthReducer.isAuth,
     id: state.AuthReducer.userId,
     login: state.AuthReducer.login,
     photoUrl: state.AuthReducer.photoUrl,

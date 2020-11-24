@@ -7,12 +7,7 @@ import "./App.css";
 
 class App extends React.Component {
   renderComponent = () => {
-    const token = localStorage.getItem("token");
-    if (token || this.props.isAuth) {
-      return <Redirect to="/chat" />;
-    } else {
-      return <Redirect to="/" />;
-    }
+    return this.props.isAuth? <Redirect to="/chat" /> : <Redirect to="/" />
   };
   render() {
     return (

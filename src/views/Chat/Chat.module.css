@@ -33,6 +33,7 @@ body {
 }
 
 .aside {
+    padding: 20px;
     width: 260px;
     height: 800px;
     background-color: #3b3e49;
@@ -58,7 +59,7 @@ body {
 }
 
 .aside li {
-    padding: 15px 35px;
+    padding: 15px 20px;
     cursor: pointer;
 }
 

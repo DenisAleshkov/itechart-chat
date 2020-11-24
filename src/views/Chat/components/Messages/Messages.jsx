@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MyMessages from "./../MyMessages/MyMessages";
 import YourMessages from "./../YourMessages/YourMessages";
 import Loading from "./../../../utils/Loading/Loading";
+import MessagesList from "./../MessagesList/MessagesList";
 import firebase from "firebase";
 import s from "./../../Chat.module.css";
 
@@ -13,8 +14,14 @@ class Messages extends Component {
     };
   }
 
-  componentDidMount() {
-    firebase
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  listenerMessage = () => {
+    this.unsubscribe = firebase
       .firestore()
       .collection("messages")
       .doc("from")
@@ -22,27 +29,20 @@ class Messages extends Component {
       .doc(this.props.myId)
       .collection("message")
       .onSnapshot((snapshot) => {
-        console.log("snapshot", snapshot);
-        const sortSnapshot = snapshot.docs.sort(
-          (a, b) => a.data().date.seconds - b.data().date.seconds
-        );
-        if (!sortSnapshot.length) {
-          return false;
+        console.log("snapshot", snapshot.docs);
+        if (snapshot.docs.length) {
+          const sortSnapshot = snapshot.docs.sort(
+            (a, b) => a.data().date.seconds - b.data().date.seconds
+          );
+          const from = {
+            ...sortSnapshot[sortSnapshot.length - 1].data(),
+            type: "from",
+            date: sortSnapshot[sortSnapshot.length - 1].data().date.seconds,
+            id: sortSnapshot[sortSnapshot.length - 1].id,
+          };
+          this.props.updateFromMessage(from);
         }
-        const from = {
-          ...sortSnapshot[sortSnapshot.length - 1].data(),
-          type: "from",
-          date: sortSnapshot[sortSnapshot.length - 1].data().date.seconds,
-          id: sortSnapshot[sortSnapshot.length - 1].id,
-        };
-        this.props.updateFromMessage(from);
       });
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value,
-    });
   };
 
   sendMessage = (e) => {
@@ -57,39 +57,13 @@ class Messages extends Component {
     }
   };
 
-  showMessage = () => {
-    const messages = [
-      ...this.props.toMessages,
-      ...this.props.fromMessages,
-    ].sort((a, b) => a.date - b.date);
-    return messages.map((element) => {
-      if (element.type === "from") {
-        return (
-          <YourMessages
-            key={element.id}
-            login={this.props.user.login}
-            text={element.text}
-            date={element.sendDate}
-          />
-        );
-      } else {
-        return (
-          <MyMessages
-            key={element.id}
-            text={element.text}
-            date={element.sendDate}
-          />
-        );
-      }
-    });
-  };
+
 
   render() {
     if (!this.props.user || this.props.isLoadingDialog) {
       return <Loading />;
     }
     const { photoUrl, login } = this.props.user;
-
     return (
       <div>
         <header className={s.messageUser}>
@@ -98,7 +72,20 @@ class Messages extends Component {
             <h2>Chat with {login}</h2>
           </div>
         </header>
-        <ul className={s.chat}>{this.showMessage()}</ul>
+        <ul className={s.chat}>
+          
+          <MessagesList
+            showMessage={this.showMessage}
+            unsubscribe={this.props.unsubscribe}
+            listenerMessage={this.props.listenerMessage}
+            toMessages={this.props.toMessages}
+            fromMessages={this.props.fromMessages}
+            dialogId={this.props.dialogId}
+            myId={this.props.myId}
+            updateFromMessage={this.props.updateFromMessage}
+            login={this.props.user.login}
+          />
+        </ul>
         <footer>
           <textarea
             id="message"
