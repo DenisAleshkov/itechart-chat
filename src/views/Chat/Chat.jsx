@@ -23,7 +23,7 @@ import {
 } from "../../store/actions/messageAction";
 import { withRouter } from "react-router-dom";
 import s from "./Chat.module.css";
-import { setLoading } from "../../store/actions/loadingActions";
+import { setLoadingMessage } from "../../store/actions/loadingActions";
 class Chat extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -68,21 +68,12 @@ class Chat extends Component {
     this.props.signOut(this.props.history);
   };
 
-  isRender = (flag) => {
-    this.setState({
-      isRender: flag,
-    });
-  };
-
   changeUser = async (e) => {
-    this.isRender(false);
     this.props.getUserById(e.target.id);
     this.props.setDialogId(e.target.id);
     this.props.getMessages(this.props.id, e.target.id, "to");
     this.props.getMessages(this.props.id, e.target.id, "from");
-    this.isRender(true);
   };
-  
 
   render() {
     if (this.props.isLoading || !this.props.isAuth) {
@@ -115,8 +106,7 @@ class Chat extends Component {
               updateFromMessage={this.props.updateFromMessage}
               isLoadingMessage={this.props.isLoadingMessage}
               isLoadingDialog={this.props.isLoadingDialog}
-              listenerMessage={this.listenerMessage}
-              unsubscribe={this.unsubscribe}
+              setLoadingMessage={this.props.setLoadingMessage}
             />
           ) : (
             <StartTemplate />
@@ -127,24 +117,22 @@ class Chat extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isAuth: state.AuthReducer.isAuth,
-    id: state.AuthReducer.userId,
-    login: state.AuthReducer.login,
-    photoUrl: state.AuthReducer.photoUrl,
-    isLoading: state.LoadingReducer.isLoading,
-    isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
-    isLoadingDialog: state.LoadingReducer.isLoadingDialog,
-    isLoadingMessage: state.LoadingReducer.isLoadingMessage,
-    toMessages: state.MessageReducer.toMessages,
-    fromMessages: state.MessageReducer.fromMessages,
-    dialogId: state.ChatReducer.dialogId,
-    usersStatus: state.ChatReducer.usersStatus,
-    users: state.ChatReducer.users,
-    changedUser: state.ChatReducer.changedUser,
-  };
-};
+const mapStateToProps = (state) => ({
+  isAuth: state.AuthReducer.isAuth,
+  id: state.AuthReducer.userId,
+  login: state.AuthReducer.login,
+  photoUrl: state.AuthReducer.photoUrl,
+  isLoading: state.LoadingReducer.isLoading,
+  isLoadingAvatar: state.LoadingReducer.isLoadingAvatar,
+  isLoadingDialog: state.LoadingReducer.isLoadingDialog,
+  isLoadingMessage: state.LoadingReducer.isLoadingMessage,
+  toMessages: state.MessageReducer.toMessages,
+  fromMessages: state.MessageReducer.fromMessages,
+  dialogId: state.ChatReducer.dialogId,
+  usersStatus: state.ChatReducer.usersStatus,
+  users: state.ChatReducer.users,
+  changedUser: state.ChatReducer.changedUser,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (credentials) => dispatch(signIn(credentials)),
@@ -155,7 +143,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getMessages(myId, userId, type)),
   setDialogId: (payload) => dispatch(setDialogId(payload)),
   setUserStatus: (payload) => dispatch(setUserStatus(payload)),
-  setLoading: (payload) => dispatch(setLoading(payload)),
+  setLoadingMessage: (payload) => dispatch(setLoadingMessage(payload)),
   setUsers: (payload) => dispatch(setUsers(payload)),
   updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
   updateUsersStatus: (payload) => dispatch(updateUsersStatus(payload)),

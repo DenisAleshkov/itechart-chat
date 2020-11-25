@@ -34,7 +34,7 @@ body {
 
 .aside {
     padding: 20px;
-    width: 260px;
+    width: 320px;
     height: 800px;
     background-color: #3b3e49;
     display: inline-block;
@@ -43,7 +43,7 @@ body {
 }
 
 .main {
-    width: 650px;
+    width: 680px;
     height: 800px;
     display: inline-block;
     font-size: 15px;
@@ -116,6 +116,14 @@ h3 {
     margin-right: 7px;
 }
 
+.you h2 {
+    margin-right: 10px;
+}
+
+.me h2 {
+    margin-left:  10px;
+}
+
 .green {
     background-color: #58b666;
 }
@@ -132,20 +140,26 @@ h3 {
 
 .main header {
     height: 110px;
-    padding: 30px 20px 30px 40px;
+    padding: 0 30px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
-.main header>* {
-    display: inline-block;
-    vertical-align: top;
+
+.main header img {
+    border-radius: 50%;
+    max-width: 100px;
+    height: 80px;
+    margin-right: 10px;
 }
 
-.main header img:first-child {
-    border-radius: 50%;
-    max-width: 50px;
+.onlineAvatar{
+    border: 3px solid #58b666;
+}
+
+.offlineAvatar{
+    border: 3px solid #ff725d;
 }
 
 .main header img:last-child {
@@ -156,6 +170,7 @@ h3 {
 .main header h2 {
     font-size: 16px;
     margin-bottom: 5px;
+    text-align: left;
 }
 
 .main header h3 {
@@ -241,9 +256,7 @@ h3 {
     height: 155px;
     padding: 20px 30px 10px 20px;
 }
-
-.main footer textarea {
-    resize: none;
+.main footer input {
     border: none;
     display: block;
     width: 100%;
@@ -257,6 +270,17 @@ h3 {
 .main footer textarea::placeholder {
     color: #ddd;
 }
+
+.main footer .form {
+    background-color: #eff3f7;
+    padding: 0;
+}
+
+.main footer input {
+  background-color: #fff;
+  height: 50%;
+}
+
 
 .main footer img {
     height: 30px;

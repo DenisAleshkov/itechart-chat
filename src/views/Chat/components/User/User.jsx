@@ -27,10 +27,11 @@ class User extends React.Component {
         this.props.updateUsersStatus(status);
       });
   }
+
   render() {
     const { login, photo, id, changeUser, status } = this.props;
     return (
-      <li className={s.user} id={id} onClick={changeUser}>
+      <li className={s.user} onClick={changeUser} id={id}>
         <img
           className={s.userImage}
           src={photo}
@@ -38,11 +39,14 @@ class User extends React.Component {
           onClick={changeUser}
           id={id}
         />
-        <div className={s.userBody}>
-          <h2 className={s.userTitle}>{login}</h2>
-          <h3 className={s.userStatus}>
+        <div className={s.userBody} id={id}>
+          <h2 className={s.userTitle} id={id}>
+            {login}
+          </h2>
+          <h3 className={s.userStatus} id={id}>
             <span
               className={`${s.status} ${status ? s.green : s.orange}`}
+              id={id}
             ></span>
             {status ? "online" : "offline"}
           </h3>

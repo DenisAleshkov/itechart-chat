@@ -9,7 +9,7 @@ function YourMessages({ login, text, date, id}) {
       <div className={s.entete}>
         <span className={`${s.status} ${s.green}`}></span>
         <h2>{login}</h2>
-        <h3>{myDate.outputDate()}</h3>
+        <h3>{myDate.getDateWithTime()}</h3>
       </div>
       <div className={s.message}>{text}</div>
     </li>

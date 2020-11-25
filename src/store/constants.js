@@ -30,5 +30,18 @@ export const UPDATE_FROM_MESSAGE = "UPDATE_FROM_MESSAGE";
 export const SET_STATUS = "SET_STATUS";
 export const UPDATE_USERS_STATUS = "UPDATE_USERS_STATUS";
 
-export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-export const WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+export const WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
