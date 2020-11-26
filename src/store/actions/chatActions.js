@@ -5,9 +5,7 @@ import {
   SET_USERS,
   SET_PHOTO,
   GET_USER_BY_ID,
-  SET_DIALOG_ID,
-  SET_STATUS,
-  UPDATE_USERS_STATUS,
+  SET_DIALOG_ID
 } from "./../constants";
 import {
   setLoading,
@@ -18,11 +16,6 @@ import {
 export const setUsers = (payload) => ({ type: SET_USERS, payload });
 export const setPhoto = (payload) => ({ type: SET_PHOTO, payload });
 export const setDialogId = (payload) => ({ type: SET_DIALOG_ID, payload });
-export const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
-export const updateUsersStatus = (payload) => ({
-  type: UPDATE_USERS_STATUS,
-  payload,
-});
 export const getUserByIdAction = (payload) => ({
   type: GET_USER_BY_ID,
   payload,

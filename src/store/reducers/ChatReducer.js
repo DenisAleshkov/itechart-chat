@@ -1,4 +1,4 @@
-import { SET_USERS, GET_USER_BY_ID, SET_DIALOG_ID, UPDATE_USERS_STATUS } from "./../constants";
+import { SET_USERS, GET_USER_BY_ID, SET_DIALOG_ID } from "./../constants";
 
 const initialState = {
   users: [],
@@ -24,12 +24,6 @@ const ChatReducer = (state = initialState, action) => {
       return {
         ...state,
         dialogId: action.payload,
-      };
-    }
-    case UPDATE_USERS_STATUS: {
-      return {
-        ...state,
-        usersStatus: action.payload
       };
     }
     default: {

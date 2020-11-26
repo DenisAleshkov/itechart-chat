@@ -9,8 +9,6 @@ import {
   getUserById,
   getUsers,
   setDialogId,
-  setUserStatus,
-  updateUsersStatus,
   uploadPhoto,
   setUsers,
 } from "./../../store/actions/chatActions";
@@ -77,7 +75,8 @@ class Chat extends Component {
   render() {
     if (this.props.isLoading || !this.props.isAuth) {
       return <Loading />;
-    }
+    } 
+    
     return (
       <div className={s.container}>
         <aside className={s.aside}>
@@ -88,7 +87,7 @@ class Chat extends Component {
             signOut={this.signOut}
             login={this.props.login}
           />
-          <h3 className={s.usersLength}>Users:{this.props.users.length}</h3>
+          <h3 className={s.usersLength}>Users: {this.props.users.length}</h3>
           <ul className={s.usersList}>{this.getUsersList()}</ul>
         </aside>
         <main className={s.main}>
@@ -106,7 +105,6 @@ class Chat extends Component {
               isLoadingMessage={this.props.isLoadingMessage}
               isLoadingDialog={this.props.isLoadingDialog}
               setLoadingMessage={this.props.setLoadingMessage}
-              setStatus={this.props.setStatus}
             />
           ) : (
             <StartTemplate />
@@ -144,7 +142,6 @@ const mapDispatchToProps = (dispatch) => ({
   getMessages: (myId, userId, type) =>
     dispatch(getMessages(myId, userId, type)),
   setDialogId: (payload) => dispatch(setDialogId(payload)),
-  setUserStatus: (payload) => dispatch(setUserStatus(payload)),
   setLoadingMessage: (payload) => dispatch(setLoadingMessage(payload)),
   setUsers: (payload) => dispatch(setUsers(payload)),
   updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),

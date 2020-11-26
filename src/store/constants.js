@@ -27,9 +27,6 @@ export const SET_FROM_MESSAGE = "SET_FROM_MESSAGE";
 export const UPDATE_TO_MESSAGE = "UPDATE_TO_MESSAGE";
 export const UPDATE_FROM_MESSAGE = "UPDATE_FROM_MESSAGE";
 
-export const SET_STATUS = "SET_STATUS";
-export const UPDATE_USERS_STATUS = "UPDATE_USERS_STATUS";
-
 export const MONTHS = [
   "January",
   "February",

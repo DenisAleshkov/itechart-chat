@@ -15,14 +15,6 @@ class MessagesList extends Component {
     this.scrollToBottom({ behavior: "auto" });
   }
 
-  scrollToBottom = (params) => {
-    this.messagesEnd.scrollIntoView &&
-      this.messagesEnd.scrollIntoView({
-        block: "end",
-        behavior: params.behavior,
-      });
-  };
-
   componentWillUnmount() {
     this.unsubscribe && this.unsubscribe();
   }
@@ -56,6 +48,14 @@ class MessagesList extends Component {
     });
   };
 
+  scrollToBottom = (params) => {
+    this.messagesEnd.scrollIntoView &&
+      this.messagesEnd.scrollIntoView({
+        block: "end",
+        behavior: params.behavior,
+      });
+  };
+
   render() {
     this.scrollToBottom({ behavior: "smooth" });
     return (
@@ -86,7 +86,7 @@ class MessagesList extends Component {
             }
           })}
         <div
-          style={{ height: "40px" , "vericalAlign": "bottom"}}
+          style={{ height: "40px" }}
           ref={(el) => {
             this.messagesEnd = el;
           }}

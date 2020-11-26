@@ -11,12 +11,10 @@ class User extends React.Component {
       .onSnapshot((snapshot) => {
         const users = [];
         snapshot.docs.forEach((doc) => {
-          if (doc.id !== localStorage.getItem("token")) {
-            const { email, login, photoUrl, status } = doc.data();
+          const { email, login, photoUrl, status } = doc.data();
+          doc.id !== localStorage.getItem("token") &&
             users.push(new UserChat(doc.id, email, login, photoUrl, status));
-          }
         });
-        console.log(users);
         this.props.setUsers(users);
       });
   }
