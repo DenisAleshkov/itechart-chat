@@ -9,7 +9,11 @@ import {
   SET_STATUS,
   UPDATE_USERS_STATUS,
 } from "./../constants";
-import { setLoading, setLoadingAvatar, setDialogLoading } from "./loadingActions";
+import {
+  setLoading,
+  setLoadingAvatar,
+  setDialogLoading,
+} from "./loadingActions";
 
 export const setUsers = (payload) => ({ type: SET_USERS, payload });
 export const setPhoto = (payload) => ({ type: SET_PHOTO, payload });
@@ -45,9 +49,7 @@ export const getUsers = (id) => {
     dispatch(setLoading(true));
     dispatch(setLoadingAvatar(true));
     axios
-      .post(USERS.GET_USERS_FOR_MESSAGE(), {
-        id: id,
-      })
+      .post(USERS.GET_USERS_FOR_MESSAGE(), id)
       .then((res) => {
         dispatch(setUsers(res.data));
         dispatch(setLoading(false));

@@ -56,8 +56,7 @@ class Chat extends Component {
           id={user.id}
           login={user.login}
           photo={user.photoUrl}
-          status={this.props.usersStatus[index].status}
-          updateUsersStatus={this.props.updateUsersStatus}
+          status={user.status}
           setUsers={this.props.setUsers}
         />
       );
@@ -107,6 +106,7 @@ class Chat extends Component {
               isLoadingMessage={this.props.isLoadingMessage}
               isLoadingDialog={this.props.isLoadingDialog}
               setLoadingMessage={this.props.setLoadingMessage}
+              setStatus={this.props.setStatus}
             />
           ) : (
             <StartTemplate />
@@ -117,7 +117,10 @@ class Chat extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => 
+
+  {console.log('state', state.MessageReducer.toMessages)
+    return {
   isAuth: state.AuthReducer.isAuth,
   id: state.AuthReducer.userId,
   login: state.AuthReducer.login,
@@ -129,10 +132,9 @@ const mapStateToProps = (state) => ({
   toMessages: state.MessageReducer.toMessages,
   fromMessages: state.MessageReducer.fromMessages,
   dialogId: state.ChatReducer.dialogId,
-  usersStatus: state.ChatReducer.usersStatus,
   users: state.ChatReducer.users,
   changedUser: state.ChatReducer.changedUser,
-});
+}};
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (credentials) => dispatch(signIn(credentials)),
@@ -146,11 +148,10 @@ const mapDispatchToProps = (dispatch) => ({
   setLoadingMessage: (payload) => dispatch(setLoadingMessage(payload)),
   setUsers: (payload) => dispatch(setUsers(payload)),
   updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
-  updateUsersStatus: (payload) => dispatch(updateUsersStatus(payload)),
   uploadPhoto: (data) => dispatch(uploadPhoto(data)),
   loadUser: (data) => dispatch(loadUser(data)),
-  sendMessage: (myId, userId, message) =>
-    dispatch(sendMessage(myId, userId, message)),
+  sendMessage: (data) =>
+    dispatch(sendMessage(data)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat));

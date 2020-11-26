@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import s from "./../../Chat.module.css"
+import { ToMessage } from "./../../../utils/Classes/classes";
+import s from "./../../Chat.module.css";
 
 class SendForm extends Component {
   constructor(props) {
@@ -17,14 +18,18 @@ class SendForm extends Component {
   };
 
   sendMessage = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (this.state.message.length > 0) {
-      const message = {
-        text: this.state.message,
-        date: firebase.firestore.Timestamp.fromDate(new Date()),
-        sendDate: new Date(),
-      };
-      this.props.sendMessage(this.props.myId, this.props.userId, message);
+      this.props.sendMessage(
+        new ToMessage(
+          this.props.myId,
+          this.props.userId,
+          "from",
+          firebase.firestore.Timestamp.fromDate(new Date()),
+          new Date(),
+          this.state.message
+        )
+      );
       this.setState({ message: "" });
     } else {
       console.log("MESSAGE IS EMPTY");

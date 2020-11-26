@@ -18,3 +18,37 @@ export class ChatDate {
     return `${this.hours}:${this.minutes} ${this.isPmOrAM}, ${this.day}`;
   }
 }
+
+export class Message {
+  constructor(id, date, sendDate, text) {
+    this.id = id;
+    this.date = date;
+    this.sendDate = sendDate;
+    this.text = text;
+  }
+}
+
+export class FromMessage extends Message {
+  constructor(id, type, date, sendDate, text) {
+    super(id, date, sendDate, text);
+    this.type = type;
+  }
+}
+
+export class ToMessage extends Message {
+  constructor(id, userId, type, date, sendDate, text) {
+    super(id, date, sendDate, text);
+    this.type = type;
+    this.userId = userId;
+  }
+}
+
+export class User {
+  constructor(id, email, login, photoUrl, status) {
+    this.id = id;
+    this.email = email;
+    this.login = login;
+    this.status = status;
+    this.photoUrl = photoUrl;
+  }
+}

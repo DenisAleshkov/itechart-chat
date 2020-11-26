@@ -1,5 +1,6 @@
 import React from "react";
 import firebase from "firebase";
+import { User as UserChat } from "./../../../utils/Classes/classes";
 import s from "./../../Chat.module.css";
 
 class User extends React.Component {
@@ -9,22 +10,14 @@ class User extends React.Component {
       .collection("users")
       .onSnapshot((snapshot) => {
         const users = [];
-        const status = [];
         snapshot.docs.forEach((doc) => {
           if (doc.id !== localStorage.getItem("token")) {
-            status.push({
-              id: doc.id,
-              status: doc.data().status,
-              login: doc.data().email,
-            });
-            users.push({
-              ...doc.data(),
-              id: doc.id,
-            });
+            const { email, login, photoUrl, status } = doc.data();
+            users.push(new UserChat(doc.id, email, login, photoUrl, status));
           }
         });
+        console.log(users);
         this.props.setUsers(users);
-        this.props.updateUsersStatus(status);
       });
   }
 

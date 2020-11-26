@@ -3,6 +3,7 @@ import firebase from "firebase";
 import MyMessages from "./../MyMessages/MyMessages";
 import YourMessages from "./../YourMessages/YourMessages";
 import MessagesLoading from "./../../../utils/MessageLoading/MessageLoading";
+import { FromMessage } from "./../../../utils/Classes/classes";
 class MessagesList extends Component {
   constructor() {
     super();
@@ -41,22 +42,24 @@ class MessagesList extends Component {
         const sortSnapshot = snapshot.docs.sort(
           (a, b) => a.data().date.seconds - b.data().date.seconds
         );
-        const from = {
-          ...sortSnapshot[sortSnapshot.length - 1].data(),
-          type: "from",
-          date: sortSnapshot[sortSnapshot.length - 1].data().date.seconds,
-          id: sortSnapshot[sortSnapshot.length - 1].id,
-        };
-        this.props.updateFromMessage(from);
+        this.props.updateFromMessage(
+          new FromMessage(
+            sortSnapshot[sortSnapshot.length - 1].id,
+            "from",
+            sortSnapshot[sortSnapshot.length - 1].data().date.seconds,
+            sortSnapshot[sortSnapshot.length - 1].data().sendDate,
+            sortSnapshot[sortSnapshot.length - 1].data().text
+          )
+        );
         this.scrollToBottom({ behavior: "smooth" });
       }
     });
   };
 
   render() {
-    this.scrollToBottom({behavior: "smooth"})
+    this.scrollToBottom({ behavior: "smooth" });
     return (
-      <div>
+      <>
         {[...this.props.toMessages, ...this.props.fromMessages]
           .sort((a, b) => a.date - b.date)
           .map((element) => {
@@ -82,7 +85,6 @@ class MessagesList extends Component {
               );
             }
           })}
-
         <div
           style={{ height: "40px" }}
           ref={(el) => {
@@ -91,7 +93,7 @@ class MessagesList extends Component {
         >
           {this.props.isLoadingMessage && <MessagesLoading />}
         </div>
-      </div>
+      </>
     );
   }
 }

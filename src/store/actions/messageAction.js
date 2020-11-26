@@ -7,6 +7,7 @@ import {
 } from "./../constants";
 import { MESSAGE } from "./../api";
 import { setDialogLoading, setLoadingMessage } from "./loadingActions";
+import { ToMessage } from "./../../views/utils/Classes/classes";
 
 export const updateToMessage = (payload) => ({
   type: UPDATE_TO_MESSAGE,
@@ -22,24 +23,31 @@ export const setFromMessage = (payload) => ({
   payload,
 });
 
-export const sendMessage = (myId, userId, message) => {
+export const sendMessage = (data) => {
   return (dispatch) => {
     dispatch(setLoadingMessage(true));
     axios
       .post(MESSAGE.SEND_MESSAGE(), {
-        myId: myId,
-        userId: userId,
-        message: message,
+        myId: data.id,
+        userId: data.userId,
+        message: {
+          text: data.text,
+          date: data.date,
+          sendDate: data.sendDate,
+        },
       })
       .then((res) => {
         dispatch(
-          updateToMessage({
-            type: "to",
-            text: message.text,
-            date: message.date.seconds,
-            sendDate: message.sendDate,
-            id: res.data.id,
-          })
+          updateToMessage(
+            new ToMessage(
+              res.data.id,
+              data.userId,
+              "to",
+              data.date.seconds,
+              data.sendDate,
+              data.text
+            )
+          )
         );
         dispatch(setLoadingMessage(false));
       })

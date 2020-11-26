@@ -4,7 +4,6 @@ const initialState = {
   users: [],
   changedUser: null,
   dialogId: null,
-  usersStatus: [],
 };
 
 const ChatReducer = (state = initialState, action) => {
@@ -13,12 +12,6 @@ const ChatReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.payload,
-        usersStatus: [
-          action.payload.map((user) => ({
-            id: user.id,
-            status: user.status,
-          })),
-        ][0],
       };
     }
     case GET_USER_BY_ID: {
