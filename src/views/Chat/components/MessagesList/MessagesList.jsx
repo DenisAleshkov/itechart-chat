@@ -86,7 +86,7 @@ class MessagesList extends Component {
             }
           })}
         <div
-          style={{ height: "40px" }}
+          style={{ height: "40px" , "vericalAlign": "bottom"}}
           ref={(el) => {
             this.messagesEnd = el;
           }}
