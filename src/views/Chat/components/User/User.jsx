@@ -1,24 +1,7 @@
 import React from "react";
-import firebase from "firebase";
-import { User as UserChat } from "./../../../utils/Classes/classes";
 import s from "./../../Chat.module.css";
 
 class User extends React.Component {
-  componentDidMount() {
-    firebase
-      .firestore()
-      .collection("users")
-      .onSnapshot((snapshot) => {
-        const users = [];
-        snapshot.docs.forEach((doc) => {
-          const { email, login, photoUrl, status } = doc.data();
-          doc.id !== localStorage.getItem("token") &&
-            users.push(new UserChat(doc.id, email, login, photoUrl, status));
-        });
-        this.props.setUsers(users);
-      });
-  }
-
   render() {
     const { login, photo, id, changeUser, status } = this.props;
     return (

@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import Loading from "./../../../utils/Loading/Loading";
 import MessagesList from "./../MessagesList/MessagesList";
 import HeaderMessages from "./../HeaderMessages/HeaderMessages";
-import s from "./../../Chat.module.css";
 import SendForm from "../SendForm/SendForm";
+import MessageLoading from "../../../utils/MessageLoading/MessageLoading";
+import s from "./../../Chat.module.css";
+
 
 class Messages extends Component {
   render() {
@@ -30,9 +32,13 @@ class Messages extends Component {
             updateFromMessage={this.props.updateFromMessage}
             login={this.props.user.login}
             myLogin={this.props.myLogin}
-            isLoadingMessage={this.props.isLoadingMessage}
+            sortMessages={this.props.sortMessages}
+            getSortMessage={this.props.getSortMessage}
           />
         </ul>
+        <div className={s.messageLoading}>
+            {this.props.isLoadingMessage && <MessageLoading />}
+        </div>
         <SendForm
           isLoadingMessage={this.props.isLoadingMessage}
           myId={this.props.myId}

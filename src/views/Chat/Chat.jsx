@@ -16,14 +16,17 @@ import { signIn, signOut, loadUser } from "./../../store/actions/authActions";
 import { connect } from "react-redux";
 import {
   getMessages,
+  getSortMessage,
   sendMessage,
   updateFromMessage,
 } from "../../store/actions/messageAction";
 import { withRouter } from "react-router-dom";
 import s from "./Chat.module.css";
 import { setLoadingMessage } from "../../store/actions/loadingActions";
+import { User as UserChat } from "./../utils/Classes/classes";
 class Chat extends Component {
   componentDidMount() {
+    const myId = localStorage.getItem("token");
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         firebase
@@ -33,9 +36,19 @@ class Chat extends Component {
           .get()
           .then((doc) => {
             this.props.loadUser({ ...doc.data(), isAuth: true, id: doc.id });
-            this.props.getUsers(this.props.id);
+            this.props.getUsers(myId);
           });
       }
+    });
+    const db = firebase.firestore().collection("users");
+    db.onSnapshot((snapshot) => {
+      const users = [];
+      snapshot.docs.forEach((doc) => {
+        const { email, login, photoUrl, status } = doc.data();
+        doc.id !== myId &&
+          users.push(new UserChat(doc.id, email, login, photoUrl, status));
+      });
+      this.props.setUsers(users);
     });
   }
 
@@ -70,13 +83,14 @@ class Chat extends Component {
     this.props.setDialogId(e.target.id);
     this.props.getMessages(this.props.id, e.target.id, "to");
     this.props.getMessages(this.props.id, e.target.id, "from");
+    this.props.getSortMessage();
   };
 
   render() {
-    if (this.props.isLoading || !this.props.isAuth) {
+    if (this.props.isLoading) {
       return <Loading />;
-    } 
-    
+    }
+
     return (
       <div className={s.container}>
         <aside className={s.aside}>
@@ -105,6 +119,8 @@ class Chat extends Component {
               isLoadingMessage={this.props.isLoadingMessage}
               isLoadingDialog={this.props.isLoadingDialog}
               setLoadingMessage={this.props.setLoadingMessage}
+              sortMessages={this.props.sortMessages}
+              getSortMessage={this.props.getSortMessage}
             />
           ) : (
             <StartTemplate />
@@ -115,10 +131,7 @@ class Chat extends Component {
   }
 }
 
-const mapStateToProps = (state) => 
-
-  {console.log('state', state.MessageReducer.toMessages)
-    return {
+const mapStateToProps = (state) => ({
   isAuth: state.AuthReducer.isAuth,
   id: state.AuthReducer.userId,
   login: state.AuthReducer.login,
@@ -129,10 +142,11 @@ const mapStateToProps = (state) =>
   isLoadingMessage: state.LoadingReducer.isLoadingMessage,
   toMessages: state.MessageReducer.toMessages,
   fromMessages: state.MessageReducer.fromMessages,
+  sortMessages: state.MessageReducer.sortMessages,
   dialogId: state.ChatReducer.dialogId,
   users: state.ChatReducer.users,
   changedUser: state.ChatReducer.changedUser,
-}};
+});
 
 const mapDispatchToProps = (dispatch) => ({
   signIn: (credentials) => dispatch(signIn(credentials)),
@@ -141,14 +155,14 @@ const mapDispatchToProps = (dispatch) => ({
   getUserById: (data) => dispatch(getUserById(data)),
   getMessages: (myId, userId, type) =>
     dispatch(getMessages(myId, userId, type)),
+  getSortMessage: () => dispatch(getSortMessage()),
   setDialogId: (payload) => dispatch(setDialogId(payload)),
   setLoadingMessage: (payload) => dispatch(setLoadingMessage(payload)),
   setUsers: (payload) => dispatch(setUsers(payload)),
   updateFromMessage: (payload) => dispatch(updateFromMessage(payload)),
   uploadPhoto: (data) => dispatch(uploadPhoto(data)),
   loadUser: (data) => dispatch(loadUser(data)),
-  sendMessage: (data) =>
-    dispatch(sendMessage(data)),
+  sendMessage: (data) => dispatch(sendMessage(data)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chat));

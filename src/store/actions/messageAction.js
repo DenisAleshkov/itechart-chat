@@ -4,23 +4,31 @@ import {
   SET_FROM_MESSAGE,
   UPDATE_TO_MESSAGE,
   UPDATE_FROM_MESSAGE,
+  GET_SORT_MESSAGE,
 } from "./../constants";
 import { MESSAGE } from "./../api";
 import { setDialogLoading, setLoadingMessage } from "./loadingActions";
 import { ToMessage } from "./../../views/utils/Classes/classes";
 
+export const setToMessage = (payload) => ({ type: SET_TO_MESSAGE, payload });
+
 export const updateToMessage = (payload) => ({
   type: UPDATE_TO_MESSAGE,
   payload,
 });
+
 export const updateFromMessage = (payload) => ({
   type: UPDATE_FROM_MESSAGE,
   payload,
 });
-export const setToMessage = (payload) => ({ type: SET_TO_MESSAGE, payload });
+
 export const setFromMessage = (payload) => ({
   type: SET_FROM_MESSAGE,
   payload,
+});
+
+export const getSortMessage = () => ({
+  type: GET_SORT_MESSAGE,
 });
 
 export const sendMessage = (data) => {
@@ -49,6 +57,7 @@ export const sendMessage = (data) => {
             )
           )
         );
+        dispatch(getSortMessage());
         dispatch(setLoadingMessage(false));
       })
       .catch((err) => {

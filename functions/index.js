@@ -22,10 +22,9 @@ exports.getAllUsers = functions.https.onRequest(async (request, response) => {
 exports.getListUserForMessage = functions.https.onRequest(
   async (request, response) => {
     const { id } = request.body;
+    console.log('id', id)
     const users = await getCollection("users");
-    const usersForMessage = users.filter((user) => {
-      return user.id !== id;
-    });
+    const usersForMessage = users.filter((user) => user.id !== id);
     response.send(usersForMessage);
   }
 );

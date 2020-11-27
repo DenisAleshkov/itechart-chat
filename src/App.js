@@ -1,25 +1,19 @@
 import React from "react";
 import SignContainer from "./views/SignContainer/SignContainer";
 import Chat from "./views/Chat/Chat";
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
 
 class App extends React.Component {
-  renderComponent = () => {
-    return this.props.isAuth? <Redirect to="/chat" /> : <Redirect to="/" />
-  };
   render() {
     return (
       <div className="App">
-        {this.renderComponent()}
         <Switch>
-          <Route exact path="/">
-            <SignContainer />
-          </Route>
-          <Route exact path="/chat">
-            <Chat />
-          </Route>
+          <PublicRoute exact isAuth={this.props.isAuth} path="/" component={SignContainer} />
+          <PrivateRoute exact path="/chat" component={Chat} />
         </Switch>
       </div>
     );

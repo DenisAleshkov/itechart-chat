@@ -20,7 +20,6 @@ export const getUserByIdAction = (payload) => ({
   type: GET_USER_BY_ID,
   payload,
 });
-
 export const getUserById = (id) => {
   return (dispatch) => {
     dispatch(setDialogLoading(true));
@@ -42,7 +41,7 @@ export const getUsers = (id) => {
     dispatch(setLoading(true));
     dispatch(setLoadingAvatar(true));
     axios
-      .post(USERS.GET_USERS_FOR_MESSAGE(), id)
+      .post(USERS.GET_USERS_FOR_MESSAGE(), { id: id })
       .then((res) => {
         dispatch(setUsers(res.data));
         dispatch(setLoading(false));

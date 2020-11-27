@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import firebase from "firebase";
-import MyMessages from "./../MyMessages/MyMessages";
-import YourMessages from "./../YourMessages/YourMessages";
-import MessagesLoading from "./../../../utils/MessageLoading/MessageLoading";
+import Message from "./../Message/Message";
 import { FromMessage } from "./../../../utils/Classes/classes";
 class MessagesList extends Component {
   constructor() {
@@ -18,6 +16,11 @@ class MessagesList extends Component {
   componentWillUnmount() {
     this.unsubscribe && this.unsubscribe();
   }
+
+  componentDidUpdate(prevProps) {
+    this.scrollToBottom({ behavior: "smooth" });
+  }
+
 
   listenerMesssage = () => {
     const db = firebase.firestore();
@@ -43,6 +46,7 @@ class MessagesList extends Component {
             sortSnapshot[sortSnapshot.length - 1].data().text
           )
         );
+        this.props.getSortMessage();
         this.scrollToBottom({ behavior: "smooth" });
       }
     });
@@ -56,43 +60,36 @@ class MessagesList extends Component {
       });
   };
 
+  getMessages = () => {
+    return this.props.sortMessages.map((element) => {
+      return element.type === "from" ? (
+        <Message
+          key={element.id}
+          login={this.props.login}
+          text={element.text}
+          date={element.sendDate}
+        />
+      ) : (
+        <Message
+          key={element.id}
+          text={element.text}
+          date={element.sendDate}
+          login={this.props.myLogin}
+          type={element.type}
+        />
+      );
+    });
+  };
+
   render() {
-    this.scrollToBottom({ behavior: "smooth" });
     return (
       <>
-        {[...this.props.toMessages, ...this.props.fromMessages]
-          .sort((a, b) => a.date - b.date)
-          .map((element) => {
-            if (element.type === "from") {
-              return (
-                <YourMessages
-                  key={element.id}
-                  id={element.id}
-                  login={this.props.login}
-                  text={element.text}
-                  date={element.sendDate}
-                />
-              );
-            } else {
-              return (
-                <MyMessages
-                  key={element.id}
-                  id={element.id}
-                  text={element.text}
-                  date={element.sendDate}
-                  login={this.props.myLogin}
-                />
-              );
-            }
-          })}
+        {this.getMessages()}
         <div
-          style={{ height: "40px" }}
           ref={(el) => {
             this.messagesEnd = el;
           }}
-        >
-          {this.props.isLoadingMessage && <MessagesLoading />}
-        </div>
+        ></div>
       </>
     );
   }
