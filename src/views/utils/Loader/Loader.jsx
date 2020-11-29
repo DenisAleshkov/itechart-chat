@@ -1,12 +1,12 @@
-import React from 'react'
-import s from "./Loader.module.css"
+import React from "react";
+import style from "./Loader.module.css";
 
-function Loader() {
-    return (
-        <div className={s.loaderWrapper}>
-            <div className={s.loader}></div>
-        </div>
-    )
-}
+const Loader = () => {
+  return (
+    <div className={style.loaderWrapper}>
+      <div className={style.loader}></div>
+    </div>
+  );
+};
 
-export default Loader
+export default Loader;

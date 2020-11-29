@@ -3,7 +3,7 @@ import SignContainer from "./views/SignContainer/SignContainer";
 import Chat from "./views/Chat/Chat";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
 
@@ -12,8 +12,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          <PublicRoute exact isAuth={this.props.isAuth} path="/" component={SignContainer} />
-          <PrivateRoute exact path="/chat" component={Chat} />
+          <PublicRoute component={SignContainer} isAuth={this.props.isAuth} path="/" exact/>
+          <PrivateRoute component={Chat} isAuth={this.props.isAuth} path="/chat" exact />
         </Switch>
       </div>
     );

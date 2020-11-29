@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import Message from "./../Message/Message";
 import { FromMessage } from "./../../../utils/Classes/classes";
+
 class MessagesList extends Component {
   constructor() {
     super();
@@ -17,7 +18,7 @@ class MessagesList extends Component {
     this.unsubscribe && this.unsubscribe();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     this.scrollToBottom({ behavior: "smooth" });
   }
 

@@ -79,9 +79,11 @@ export const getMessages = (myId, userId, type) => {
       .then((res) => {
         if (type === "from") {
           dispatch(setFromMessage(res.data.messages));
+          dispatch(getSortMessage());
           dispatch(setDialogLoading(false));
         } else if (type === "to") {
           dispatch(setToMessage(res.data.messages));
+          dispatch(getSortMessage());
           dispatch(setDialogLoading(false));
         }
       })

@@ -1,13 +1,13 @@
 import React from "react";
-import s from "./../../Chat.module.css";
+import style from "./../../Chat.module.css";
 
 function HeaderMessages({ status, photoUrl, login, messagesLength }) {
   return (
-      <header className={s.messageHeader}> 
+      <header className={style.messageHeader}> 
         <img
           src={photoUrl}
           alt="avatar"
-          className={`${status ? `${s.onlineAvatar}` : `${s.offlineAvatar}`}`}
+          className={`${status ? `${style.onlineAvatar}` : `${style.offlineAvatar}`}`}
         />
         <div>
           <h2>Chat with {login}</h2>

@@ -1,20 +1,20 @@
 import React from "react";
 import Loader from "./../../../utils/Loader/Loader";
-import i from "./UploadInput.module.css";
-import s from "./../../Chat.module.css";
+import inputStyle from "./UploadInput.module.css";
+import style from "./../../Chat.module.css";
 
 const Profile = ({ photo, fileChanged, isLoadingAvatar, signOut, login }) => {
   if (isLoadingAvatar) {
     return <Loader />;
   }
   return (
-    <header className={s.profile}>
+    <header className={style.profile}>
       <button onClick={signOut}>SIGN OUT</button>
-      <img src={photo} className={s.profilePhoto} />
-      <h2 className={s.profileLogin}>{login}</h2>
-      <div className={i.wrapper}>
-        <div className={i.fileUpload}>
-          <input className={i.inputUpload} type="file" onChange={fileChanged} />
+      <img src={photo} className={style.profilePhoto} />
+      <h2 className={style.profileLogin}>{login}</h2>
+      <div className={inputStyle.wrapper}>
+        <div className={inputStyle.fileUpload}>
+          <input className={inputStyle.inputUpload} type="file" onChange={fileChanged} />
           <i className="fa fa-arrow-up"></i>
         </div>
       </div>

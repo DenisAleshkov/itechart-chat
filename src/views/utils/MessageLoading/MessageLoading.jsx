@@ -1,9 +1,11 @@
 import React from "react";
-import s from "./MessagesLoading.module.css"
-export default function MessageLoading() {
+import style from "./MessagesLoading.module.css";
+const MessageLoading = () => {
   return (
-    <div className={s.spinner}>
-      <div className={`${s.cpSpinner} ${s.cpBubble}`}></div>
+    <div className={style.spinner}>
+      <div className={`${style.cpSpinner} ${style.cpBubble}`}></div>
     </div>
   );
-}
+};
+
+export default MessageLoading;

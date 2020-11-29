@@ -4,7 +4,7 @@ import MessagesList from "./../MessagesList/MessagesList";
 import HeaderMessages from "./../HeaderMessages/HeaderMessages";
 import SendForm from "../SendForm/SendForm";
 import MessageLoading from "../../../utils/MessageLoading/MessageLoading";
-import s from "./../../Chat.module.css";
+import style from "./../../Chat.module.css";
 
 
 class Messages extends Component {
@@ -22,7 +22,7 @@ class Messages extends Component {
             this.props.toMessages.length + this.props.fromMessages.length
           }
         />
-        <ul className={s.chat}>
+        <ul className={style.chat}>
           <MessagesList
             showMessage={this.showMessage}
             toMessages={this.props.toMessages}
@@ -36,7 +36,7 @@ class Messages extends Component {
             getSortMessage={this.props.getSortMessage}
           />
         </ul>
-        <div className={s.messageLoading}>
+        <div className={style.messageLoading}>
             {this.props.isLoadingMessage && <MessageLoading />}
         </div>
         <SendForm

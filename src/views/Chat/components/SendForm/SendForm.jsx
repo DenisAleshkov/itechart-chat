@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "firebase";
 import { ToMessage } from "./../../../utils/Classes/classes";
-import s from "./../../Chat.module.css";
+import style from "./../../Chat.module.css";
 
 class SendForm extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class SendForm extends Component {
   render() {
     return (
       <footer>
-        <form className={s.form} onSubmit={this.sendMessage}>
+        <form className={style.form} onSubmit={this.sendMessage}>
           <input
             id="message"
             placeholder="Type your message"

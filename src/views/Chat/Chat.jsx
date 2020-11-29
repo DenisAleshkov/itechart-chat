@@ -21,9 +21,10 @@ import {
   updateFromMessage,
 } from "../../store/actions/messageAction";
 import { withRouter } from "react-router-dom";
-import s from "./Chat.module.css";
 import { setLoadingMessage } from "../../store/actions/loadingActions";
 import { User as UserChat } from "./../utils/Classes/classes";
+import style from "./Chat.module.css";
+
 class Chat extends Component {
   componentDidMount() {
     const myId = localStorage.getItem("token");
@@ -59,7 +60,7 @@ class Chat extends Component {
   };
 
   getUsersList = () => {
-    return this.props.users.map((user, index) => {
+    return this.props.users.map((user) => {
       return (
         <User
           changeUser={this.changeUser}
@@ -78,7 +79,7 @@ class Chat extends Component {
     this.props.signOut(this.props.history);
   };
 
-  changeUser = async (e) => {
+  changeUser = (e) => {
     this.props.getUserById(e.target.id);
     this.props.setDialogId(e.target.id);
     this.props.getMessages(this.props.id, e.target.id, "to");
@@ -87,13 +88,13 @@ class Chat extends Component {
   };
 
   render() {
-    if (this.props.isLoading) {
+    if (this.props.isLoading || !this.props.isAuth) {
       return <Loading />;
     }
 
     return (
-      <div className={s.container}>
-        <aside className={s.aside}>
+      <div className={style.container}>
+        <aside className={style.aside}>
           <Profile
             photo={this.props.photoUrl}
             fileChanged={this.fileChanged}
@@ -101,10 +102,12 @@ class Chat extends Component {
             signOut={this.signOut}
             login={this.props.login}
           />
-          <h3 className={s.usersLength}>Users: {this.props.users.length}</h3>
-          <ul className={s.usersList}>{this.getUsersList()}</ul>
+          <h3 className={style.usersLength}>
+            Users: {this.props.users.length}
+          </h3>
+          <ul className={style.usersList}>{this.getUsersList()}</ul>
         </aside>
-        <main className={s.main}>
+        <main className={style.main}>
           {this.props.dialogId ? (
             <Messages
               myLogin={this.props.login}
