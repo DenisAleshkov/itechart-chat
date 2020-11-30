@@ -57,21 +57,18 @@ class Chat extends Component {
     }
   };
 
-  getUsersList = () => {
-    return this.props.users.map((user) => {
-      return (
-        <User
-          changeUser={this.changeUser}
-          key={user.id}
-          id={user.id}
-          login={user.login}
-          photo={user.photoUrl}
-          status={user.status}
-          setUsers={this.props.setUsers}
-        />
-      );
-    });
-  };
+  getUsersList = () =>
+    this.props.users.map((user) => (
+      <User
+        changeUser={this.changeUser}
+        key={user.id}
+        id={user.id}
+        login={user.login}
+        photo={user.photoUrl}
+        status={user.status}
+        setUsers={this.props.setUsers}
+      />
+    ));
 
   signOut = () => {
     this.props.signOut(this.props.history);

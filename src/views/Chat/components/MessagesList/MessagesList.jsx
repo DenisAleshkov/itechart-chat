@@ -22,7 +22,6 @@ class MessagesList extends Component {
     this.scrollToBottom({ behavior: "smooth" });
   }
 
-
   listenerMesssage = () => {
     const db = firebase.firestore();
     const messagesRef = db.collection("messages").doc("from");
@@ -61,9 +60,9 @@ class MessagesList extends Component {
       });
   };
 
-  getMessages = () => {
-    return this.props.sortMessages.map((element) => {
-      return element.type === "from" ? (
+  getMessages = () =>
+    this.props.sortMessages.map((element) =>
+      element.type === "from" ? (
         <Message
           key={element.id}
           login={this.props.login}
@@ -78,9 +77,8 @@ class MessagesList extends Component {
           login={this.props.myLogin}
           type={element.type}
         />
-      );
-    });
-  };
+      )
+    );
 
   render() {
     return (
