@@ -26,7 +26,6 @@ export const SET_TO_MESSAGE = "SET_TO_MESSAGE";
 export const SET_FROM_MESSAGE = "SET_FROM_MESSAGE";
 export const UPDATE_TO_MESSAGE = "UPDATE_TO_MESSAGE";
 export const UPDATE_FROM_MESSAGE = "UPDATE_FROM_MESSAGE";
-export const SET_SORT_MESSAGE = "SET_SORT_MESSAGE";
 export const GET_SORT_MESSAGE = "GET_SORT_MESSAGE";
 
 export const MONTHS = [
@@ -43,4 +42,5 @@ export const MONTHS = [
   "November",
   "December",
 ];
+
 export const WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

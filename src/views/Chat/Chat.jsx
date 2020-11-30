@@ -12,14 +12,14 @@ import {
   uploadPhoto,
   setUsers,
 } from "./../../store/actions/chatActions";
-import { signIn, signOut, loadUser } from "./../../store/actions/authActions";
-import { connect } from "react-redux";
 import {
   getMessages,
   getSortMessage,
   sendMessage,
   updateFromMessage,
 } from "../../store/actions/messageAction";
+import { signIn, signOut, loadUser } from "./../../store/actions/authActions";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { setLoadingMessage } from "../../store/actions/loadingActions";
 import { User as UserChat } from "./../utils/Classes/classes";
@@ -27,27 +27,25 @@ import style from "./Chat.module.css";
 
 class Chat extends Component {
   componentDidMount() {
-    const myId = localStorage.getItem("token");
+    const db = firebase.firestore().collection("users");
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(user.uid)
+        db.doc(user.uid)
           .get()
           .then((doc) => {
             this.props.loadUser({ ...doc.data(), isAuth: true, id: doc.id });
-            this.props.getUsers(myId);
+            this.props.getUsers(doc.id);
           });
       }
     });
-    const db = firebase.firestore().collection("users");
+
     db.onSnapshot((snapshot) => {
       const users = [];
       snapshot.docs.forEach((doc) => {
         const { email, login, photoUrl, status } = doc.data();
-        doc.id !== myId &&
+        if (doc.id !== this.props.id) {
           users.push(new UserChat(doc.id, email, login, photoUrl, status));
+        }
       });
       this.props.setUsers(users);
     });

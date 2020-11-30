@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SignIn from "./components/SignIn/SignIn";
 import SignUp from "./components/SignUp/SignUp";
-import s from "./SignContainer.module.css";
+import style from "./SignContainer.module.css";
 import { connect } from "react-redux";
 import { signIn, signUp } from "../../store/actions/authActions";
 class SignContainer extends Component {
@@ -11,7 +11,7 @@ class SignContainer extends Component {
 
   changeRight = () => {
     this.setState({
-      cssClass: s.rightPanelActive,
+      cssClass: style.rightPanelActive,
     });
   };
 
@@ -22,40 +22,40 @@ class SignContainer extends Component {
   };
   render() {
     return (
-      <div className={s.body}>
-        <div className={`${s.container} ${this.state.cssClass}`} id="container">
-          <div className={`${s.formContainer} ${s.signUpContainer}`}>
+      <div className={style.body}>
+        <div className={`${style.container} ${this.state.cssClass}`} id="container">
+          <div className={`${style.formContainer} ${style.signUpContainer}`}>
             <SignUp
               isLoading={this.props.isLoading}
               signUp={this.props.signUp}
             />
           </div>
-          <div className={`${s.formContainer} ${s.signInContainer}`}>
+          <div className={`${style.formContainer} ${style.signInContainer}`}>
             <SignIn
               isLoading={this.props.isLoading}
               signIn={this.props.signIn}
             />
           </div>
-          <div className={s.overlayContainer}>
-            <div className={s.overlay}>
-              <div className={`${s.overlayPanel} ${s.overlayLeft}`}>
+          <div className={style.overlayContainer}>
+            <div className={style.overlay}>
+              <div className={`${style.overlayPanel} ${style.overlayLeft}`}>
                 <h1>Welcome Back!</h1>
                 <p>
                   To keep connected with us please login with your personal info
                 </p>
                 <button
-                  className={s.ghost}
+                  className={style.ghost}
                   id="signIn"
                   onClick={this.changeLeft}
                 >
                   Sign In
                 </button>
               </div>
-              <div className={`${s.overlayPanel} ${s.overlayRight}`}>
+              <div className={`${style.overlayPanel} ${style.overlayRight}`}>
                 <h1>Hello, Friend!</h1>
                 <p>Enter your personal details and start journey with us</p>
                 <button
-                  className={s.ghost}
+                  className={style.ghost}
                   id="signUp"
                   onClick={this.changeRight}
                 >
